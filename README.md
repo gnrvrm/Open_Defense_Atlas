@@ -2,6 +2,10 @@
 
 Statik MVP: Avrupa ülkeleri üzerinden açık kaynaklı savunma kabiliyetlerini harita üzerinde, kaynak ve belirsizlik bilgisiyle incelemek için hazırlanmış ilk prototip.
 
+## Canlı demo
+
+[Open Defense Atlas'ı GitHub Pages üzerinde aç](https://gnrvrm.github.io/Open_Defense_Atlas/)
+
 ## Çalıştırma
 
 Önerilen kullanım:
