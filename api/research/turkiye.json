@@ -1,0 +1,239 @@
+{
+  "countryId": "turkiye",
+  "generatedAt": "2026-04-26T10:12:15Z",
+  "build": "v0.2.3-static-research-20260426",
+  "mode": "static-research-export",
+  "findings": [
+    {
+      "id": "roketsan-tayfun",
+      "title": "TAYFUN füzesi",
+      "publisher": "Roketsan ürün kataloğu",
+      "category": "attack",
+      "url": "https://www.roketsan.com.tr/uploads/docs/kataloglar/ENG/2024/1726596010_tayfun.pdf",
+      "date": "2026-04-26",
+      "state": "verified",
+      "rangeLabel": ">280 km",
+      "rangeKm": 280,
+      "summary": "Resmi ürün kataloğunda menzil >280 km olarak yayımlanıyor."
+    },
+    {
+      "id": "roketsan-khan",
+      "title": "KHAN / BORA füzesi",
+      "publisher": "Roketsan ürün sayfası",
+      "category": "attack",
+      "url": "https://www.roketsan.com.tr/en/products/khan-missile",
+      "date": "2026-04-26",
+      "state": "pending",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Kaynağa şu anda erişilemedi; son bilinen kayıt: Kaynak kaydı incelenmek üzere eklendi."
+    },
+    {
+      "id": "roketsan-trg-300",
+      "title": "TRG-300 güdümlü füze",
+      "publisher": "Roketsan ürün sayfası",
+      "category": "attack",
+      "url": "https://www.roketsan.com.tr/en/products/trg-300-guided-missile",
+      "date": "2026-04-26",
+      "state": "pending",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Kaynağa şu anda erişilemedi; son bilinen kayıt: Kaynak kaydı incelenmek üzere eklendi."
+    },
+    {
+      "id": "roketsan-som-j",
+      "title": "SOM-J seyir füzesi",
+      "publisher": "Roketsan ürün kataloğu",
+      "category": "attack",
+      "url": "https://www.roketsan.com.tr/uploads/docs/kataloglar/ENG/2024/1726595985_som-j.pdf",
+      "date": "2026-04-26",
+      "state": "verified",
+      "rangeLabel": "200 km",
+      "rangeKm": 200,
+      "summary": "Resmi ürün kataloğunda menzil 200 km olarak yayımlanıyor."
+    },
+    {
+      "id": "roketsan-atmaca",
+      "title": "ATMACA gemisavar füzesi",
+      "publisher": "Roketsan ürün sayfası",
+      "category": "naval",
+      "url": "https://www.roketsan.com.tr/en/products/atmaca-anti-ship-missile",
+      "date": "2026-04-26",
+      "state": "pending",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Kaynağa şu anda erişilemedi; son bilinen kayıt: Kaynak kaydı incelenmek üzere eklendi."
+    },
+    {
+      "id": "roketsan-hisar",
+      "title": "HİSAR hava savunma füzeleri",
+      "publisher": "Roketsan ürün sayfası",
+      "category": "defense",
+      "url": "https://www.roketsan.com.tr/en/products/hisar-air-defence-missiles",
+      "date": "2026-04-26",
+      "state": "pending",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Kaynağa şu anda erişilemedi; son bilinen kayıt: Kaynak kaydı incelenmek üzere eklendi."
+    },
+    {
+      "id": "roketsan-siper",
+      "title": "SİPER hava ve füze savunma sistemi",
+      "publisher": "Roketsan ürün kataloğu",
+      "category": "defense",
+      "url": "https://www.roketsan.com.tr/uploads/docs/kataloglar/ENG/2024/1726595985_siper.pdf",
+      "date": "2026-04-26",
+      "state": "verified",
+      "rangeLabel": "100+ / 150 km",
+      "rangeKm": 150,
+      "summary": "Resmi ürün kataloğunda SİPER Block-1 için 100+ km, Block-2 için 150 km menzil yayımlanıyor."
+    },
+    {
+      "id": "roketsan-sungur",
+      "title": "SUNGUR hava savunma sistemi",
+      "publisher": "Roketsan ürün sayfası",
+      "category": "defense",
+      "url": "https://www.roketsan.com.tr/en/products/sungur-air-defence-missile-system",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Kısa menzilli hava savunma ürün kaydı; bu prototipte sayısal menzil alanı envantere manuel doğrulama ile işlenir."
+    },
+    {
+      "id": "sipri-arms-transfers",
+      "title": "SIPRI Arms Transfers Database",
+      "publisher": "SIPRI",
+      "category": "reference",
+      "url": "https://www.sipri.org/databases/armstransfers",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Ülke bazlı transfer kayıtları için kaynak; doğrudan ürün envanteri değil, transfer doğrulaması için kullanılır."
+    },
+    {
+      "id": "globalfirepower-2026",
+      "title": "2026 Turkiye Military Strength",
+      "publisher": "Global Firepower",
+      "category": "reference",
+      "url": "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=Turkey",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Personel, kara, hava ve deniz kategori toplamları için kaynak; model-model platform doğrulaması değildir."
+    },
+    {
+      "id": "flightglobal-waf-2025",
+      "title": "World Air Forces 2025 Directory",
+      "publisher": "FlightGlobal / Cirium",
+      "category": "reference",
+      "url": "https://www.flightglobal.com/download?ac=106507",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Hava aracı tip/adet kırılımı için kullanılan kaynak."
+    },
+    {
+      "id": "unroca",
+      "title": "UN Register of Conventional Arms",
+      "publisher": "UNROCA",
+      "category": "reference",
+      "url": "https://www.unroca.org/en/reporting/",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Devlet raporları üzerinden konvansiyonel silah transfer doğrulaması için kullanılır."
+    }
+  ],
+  "sources": [
+    {
+      "id": "roketsan-tayfun",
+      "url": "https://www.roketsan.com.tr/uploads/docs/kataloglar/ENG/2024/1726596010_tayfun.pdf",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "roketsan-khan",
+      "url": "https://www.roketsan.com.tr/en/products/khan-missile",
+      "reachable": false,
+      "tlsVerified": false,
+      "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)>"
+    },
+    {
+      "id": "roketsan-trg-300",
+      "url": "https://www.roketsan.com.tr/en/products/trg-300-guided-missile",
+      "reachable": false,
+      "tlsVerified": false,
+      "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)>"
+    },
+    {
+      "id": "roketsan-som-j",
+      "url": "https://www.roketsan.com.tr/uploads/docs/kataloglar/ENG/2024/1726595985_som-j.pdf",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "roketsan-atmaca",
+      "url": "https://www.roketsan.com.tr/en/products/atmaca-anti-ship-missile",
+      "reachable": false,
+      "tlsVerified": false,
+      "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)>"
+    },
+    {
+      "id": "roketsan-hisar",
+      "url": "https://www.roketsan.com.tr/en/products/hisar-air-defence-missiles",
+      "reachable": false,
+      "tlsVerified": false,
+      "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)>"
+    },
+    {
+      "id": "roketsan-siper",
+      "url": "https://www.roketsan.com.tr/uploads/docs/kataloglar/ENG/2024/1726595985_siper.pdf",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "roketsan-sungur",
+      "url": "https://www.roketsan.com.tr/en/products/sungur-air-defence-missile-system",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "sipri-arms-transfers",
+      "url": "https://www.sipri.org/databases/armstransfers",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "globalfirepower-2026",
+      "url": "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=Turkey",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "flightglobal-waf-2025",
+      "url": "https://www.flightglobal.com/download?ac=106507",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "unroca",
+      "url": "https://www.unroca.org/en/reporting/",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    }
+  ],
+  "warnings": []
+}

@@ -1,0 +1,163 @@
+{
+  "countryId": "greece",
+  "generatedAt": "2026-04-26T10:12:15Z",
+  "build": "v0.2.3-static-research-20260426",
+  "mode": "static-research-export",
+  "findings": [
+    {
+      "id": "gr-mbda-contracts",
+      "title": "Greece missile contracts with MBDA",
+      "publisher": "MBDA",
+      "category": "reference",
+      "url": "https://newsroom.mbda-systems.com/?p=6237",
+      "date": "2026-04-26",
+      "state": "verified",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Rafale ve FDI modernizasyonuyla ilişkili MBDA füze sözleşmeleri için üretici kaynak kaydı."
+    },
+    {
+      "id": "gr-scalp-eg",
+      "title": "SCALP EG",
+      "publisher": "MBDA",
+      "category": "attack",
+      "url": "https://newsroom.mbda-systems.com/?p=6237",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Havadan atılan stand-off mühimmat kaydı; platform bağımlı olduğu için sabit harita dairesi oluşturulmaz."
+    },
+    {
+      "id": "gr-exocet",
+      "title": "Exocet MM40 Block 3C",
+      "publisher": "MBDA",
+      "category": "naval",
+      "url": "https://newsroom.mbda-systems.com/?p=6237",
+      "date": "2026-04-26",
+      "state": "verified",
+      "rangeLabel": "250 km sınıfı",
+      "rangeKm": 250,
+      "summary": "Yunanistan deniz modernizasyon paketinde yer alan Exocet ailesi için üretici kaynak kaydı."
+    },
+    {
+      "id": "gr-s300",
+      "title": "S-300PMU-1",
+      "publisher": "Açık kaynak sistem referansları",
+      "category": "defense",
+      "url": "https://www.sipri.org/databases/armstransfers",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": "150 km sınıfı",
+      "rangeKm": 150,
+      "summary": "Uzun menzilli hava savunma sistemi kaydı; hassas konuşlanma bilgisi gösterilmez."
+    },
+    {
+      "id": "gr-globalfirepower-2026",
+      "title": "2026 Greece Military Strength",
+      "publisher": "Global Firepower",
+      "category": "reference",
+      "url": "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=greece",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Personel, kara, hava ve deniz kategori toplamları için kaynak; model-model platform doğrulaması değildir."
+    },
+    {
+      "id": "gr-flightglobal-waf-2025",
+      "title": "World Air Forces 2025 Directory",
+      "publisher": "FlightGlobal / Cirium",
+      "category": "reference",
+      "url": "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Yunanistan hava aracı tip/adet kırılımı için kullanılan kaynak."
+    },
+    {
+      "id": "gr-sipri-arms-transfers",
+      "title": "SIPRI Arms Transfers Database",
+      "publisher": "SIPRI",
+      "category": "reference",
+      "url": "https://www.sipri.org/databases/armstransfers",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Ülke bazlı transfer kayıtları ve tedarik çapraz kontrolü için kullanılır."
+    },
+    {
+      "id": "gr-unroca",
+      "title": "UN Register of Conventional Arms",
+      "publisher": "UNROCA",
+      "category": "reference",
+      "url": "https://www.unroca.org/en/reporting/",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Devlet raporları üzerinden konvansiyonel silah transfer doğrulaması için kullanılır."
+    }
+  ],
+  "sources": [
+    {
+      "id": "gr-mbda-contracts",
+      "url": "https://newsroom.mbda-systems.com/?p=6237",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "gr-scalp-eg",
+      "url": "https://newsroom.mbda-systems.com/?p=6237",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "gr-exocet",
+      "url": "https://newsroom.mbda-systems.com/?p=6237",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "gr-s300",
+      "url": "https://www.sipri.org/databases/armstransfers",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "gr-globalfirepower-2026",
+      "url": "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=greece",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "gr-flightglobal-waf-2025",
+      "url": "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "gr-sipri-arms-transfers",
+      "url": "https://www.sipri.org/databases/armstransfers",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "gr-unroca",
+      "url": "https://www.unroca.org/en/reporting/",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    }
+  ],
+  "warnings": []
+}

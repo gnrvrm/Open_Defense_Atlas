@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open Defense Atlas</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="./styles.css?v=v0.2.3" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Atlas kontrol paneli">
+        <header class="brand-bar">
+          <div>
+            <p class="eyebrow">Open Defense Atlas</p>
+            <h1>Açık Kaynak Savunma Atlası</h1>
+          </div>
+          <span class="status-pill" id="versionBadge">Demo v0.2.3 - E.Guner</span>
+        </header>
+
+        <section class="control-block">
+          <label class="field-label" for="countrySelect">Ülke</label>
+          <select id="countrySelect" class="select-input"></select>
+        </section>
+
+        <section class="metrics-grid" aria-label="Ülke özeti">
+          <div class="metric">
+            <span class="metric-value" id="assetCount">0</span>
+            <span class="metric-label">envanter</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value" id="siteCount">0</span>
+            <span class="metric-label">bölge</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value" id="sourceScore">0%</span>
+            <span class="metric-label">güven</span>
+          </div>
+        </section>
+
+        <section class="control-block strength-block" aria-label="Askeri güç özeti">
+          <div class="section-heading">
+            <h2>Askeri Güç</h2>
+            <span class="mini-label">özet</span>
+          </div>
+          <div class="strength-grid" id="strengthGrid"></div>
+          <p class="note-text" id="strengthNote"></p>
+          <div class="strength-detail" id="strengthDetail"></div>
+        </section>
+
+        <section class="control-block">
+          <div class="section-heading">
+            <h2>Envanter</h2>
+            <span class="mini-label" id="rangeLabel">menzil</span>
+          </div>
+          <div class="asset-list" id="assetList"></div>
+        </section>
+
+        <section class="control-block">
+          <div class="section-heading">
+            <h2>Katmanlar</h2>
+            <button class="icon-button" id="resetView" aria-label="Haritayı sıfırla" title="Haritayı sıfırla">
+              <i data-lucide="rotate-ccw"></i>
+            </button>
+          </div>
+          <div class="layer-grid" id="layerControls"></div>
+        </section>
+      </aside>
+
+      <main class="map-stage">
+        <div id="map" aria-label="Savunma atlası haritası"></div>
+
+        <div class="top-panel">
+          <div>
+            <p class="eyebrow">Veri okuma rehberi</p>
+            <strong id="countryHeadline">Seçili ülke</strong>
+            <span id="selectedRange" class="range-readout"></span>
+          </div>
+          <div class="policy-strip" aria-label="Haritadaki veri notları">
+            <span class="policy-item policy-source">
+              <strong>Kaynak var</strong>
+              <small>Açık kaynak bağlantısı mevcut</small>
+            </span>
+            <span class="policy-item policy-delay">
+              <strong>Canlı veri değil</strong>
+              <small>Rapor/katalog bilgisi; anlık takip yok</small>
+            </span>
+            <span class="policy-item policy-approx">
+              <strong>Konum yaklaşık</strong>
+              <small>Kesin üs veya radar koordinatı gösterilmez</small>
+            </span>
+          </div>
+        </div>
+
+        <div class="map-legend" id="legend"></div>
+
+        <section class="detail-panel" id="detailPanel" aria-label="Seçili bölge detayı">
+          <div class="empty-state">
+            <i data-lucide="map-pin"></i>
+            <p>Haritadaki bir bölgeyi seçin.</p>
+          </div>
+        </section>
+      </main>
+
+      <aside class="intel-panel" aria-label="Açık kaynak inceleme kuyruğu">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">OSINT kuyruğu</p>
+            <h2>İnceleme</h2>
+          </div>
+          <button class="primary-button" id="scanButton">
+            <i data-lucide="radar"></i>
+            Yenile
+          </button>
+        </div>
+
+        <div class="search-wrap">
+          <i data-lucide="search"></i>
+          <input id="sourceSearch" type="search" placeholder="Kaynak, sistem veya bölge ara" />
+        </div>
+
+        <div class="source-list" id="sourceList"></div>
+      </aside>
+    </div>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.js"></script>
+    <script src="./src/meta.js?v=v0.2.3"></script>
+    <script src="./src/data.js?v=v0.2.3"></script>
+    <script src="./src/countryProfiles.js?v=v0.2.3"></script>
+    <script src="./src/europeProfiles.js?v=v0.2.3"></script>
+    <script src="./src/app.js?v=v0.2.3"></script>
+  </body>
+</html>

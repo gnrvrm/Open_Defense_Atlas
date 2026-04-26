@@ -1,0 +1,163 @@
+{
+  "countryId": "poland",
+  "generatedAt": "2026-04-26T10:12:15Z",
+  "build": "v0.2.3-static-research-20260426",
+  "mode": "static-research-export",
+  "findings": [
+    {
+      "id": "pl-himars",
+      "title": "HIMARS / Homar-A",
+      "publisher": "Lockheed Martin",
+      "category": "attack",
+      "url": "https://news.lockheedmartin.com/2023-05-15-Poland-Receives-Delivery-of-First-HIMARS",
+      "date": "2026-04-26",
+      "state": "verified",
+      "rangeLabel": "300 km sınıfı",
+      "rangeKm": 300,
+      "summary": "Polonya HIMARS teslimat ve tedarik kaydı; 300 km sınıfı derin ateş kabiliyeti olarak envantere bağlandı."
+    },
+    {
+      "id": "pl-narew",
+      "title": "Narew / CAMM hava savunması",
+      "publisher": "MBDA",
+      "category": "defense",
+      "url": "https://www.mbda-systems.com/mbda-and-poland-sign-landmark-narew-project/",
+      "date": "2026-04-26",
+      "state": "verified",
+      "rangeLabel": "25+ km sınıfı",
+      "rangeKm": 25,
+      "summary": "Narew programı Polonya kısa/orta menzilli hava savunma katmanı için üretici kaynak kaydıdır."
+    },
+    {
+      "id": "pl-ibcs",
+      "title": "Wisła / Patriot IBCS",
+      "publisher": "US Army",
+      "category": "sensor",
+      "url": "https://www.army.mil/article/285095/poland_becomes_first_ally_fully_operational_with_ibcs",
+      "date": "2026-04-26",
+      "state": "verified",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Polonya'nın IBCS ile entegre hava savunma ağına ilişkin resmi müttefik kaynak kaydı."
+    },
+    {
+      "id": "pl-nsm",
+      "title": "NSM kıyı savunma sistemi",
+      "publisher": "Kongsberg",
+      "category": "naval",
+      "url": "https://www.kongsberg.com/kda/news/news-archive/2023/kongsberg-signs-naval-strike-missile-coastal-defence-system-contract-with-poland-worth-approximately-nok-16-billion",
+      "date": "2026-04-26",
+      "state": "verified",
+      "rangeLabel": "100+ nm / 185+ km sınıfı",
+      "rangeKm": 185,
+      "summary": "Polonya kıyı savunma sistemi için NSM üretici/sözleşme kaynak kaydı."
+    },
+    {
+      "id": "pl-globalfirepower-2026",
+      "title": "2026 Poland Military Strength",
+      "publisher": "Global Firepower",
+      "category": "reference",
+      "url": "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=poland",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Personel, kara, hava ve deniz kategori toplamları için kaynak; model-model platform doğrulaması değildir."
+    },
+    {
+      "id": "pl-flightglobal-waf-2025",
+      "title": "World Air Forces 2025 Directory",
+      "publisher": "FlightGlobal / Cirium",
+      "category": "reference",
+      "url": "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Polonya hava aracı tip/adet kırılımı için kullanılan kaynak."
+    },
+    {
+      "id": "pl-sipri-arms-transfers",
+      "title": "SIPRI Arms Transfers Database",
+      "publisher": "SIPRI",
+      "category": "reference",
+      "url": "https://www.sipri.org/databases/armstransfers",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Ülke bazlı transfer kayıtları ve tedarik çapraz kontrolü için kullanılır."
+    },
+    {
+      "id": "pl-unroca",
+      "title": "UN Register of Conventional Arms",
+      "publisher": "UNROCA",
+      "category": "reference",
+      "url": "https://www.unroca.org/en/reporting/",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Devlet raporları üzerinden konvansiyonel silah transfer doğrulaması için kullanılır."
+    }
+  ],
+  "sources": [
+    {
+      "id": "pl-himars",
+      "url": "https://news.lockheedmartin.com/2023-05-15-Poland-Receives-Delivery-of-First-HIMARS",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "pl-narew",
+      "url": "https://www.mbda-systems.com/mbda-and-poland-sign-landmark-narew-project/",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "pl-ibcs",
+      "url": "https://www.army.mil/article/285095/poland_becomes_first_ally_fully_operational_with_ibcs",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "pl-nsm",
+      "url": "https://www.kongsberg.com/kda/news/news-archive/2023/kongsberg-signs-naval-strike-missile-coastal-defence-system-contract-with-poland-worth-approximately-nok-16-billion",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "pl-globalfirepower-2026",
+      "url": "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=poland",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "pl-flightglobal-waf-2025",
+      "url": "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "pl-sipri-arms-transfers",
+      "url": "https://www.sipri.org/databases/armstransfers",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "pl-unroca",
+      "url": "https://www.unroca.org/en/reporting/",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    }
+  ],
+  "warnings": []
+}

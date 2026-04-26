@@ -1,0 +1,68 @@
+{
+  "countryId": "cyprus",
+  "generatedAt": "2026-04-26T10:12:15Z",
+  "build": "v0.2.3-static-research-20260426",
+  "mode": "static-research-export",
+  "findings": [
+    {
+      "id": "cyprus-primary-defense-profile",
+      "title": "Cyprus reporting and defense reference",
+      "publisher": "UNROCA / open-source references",
+      "category": "reference",
+      "url": "https://www.unroca.org/en/reporting/",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Ülke ölçeğinde personel, kara, hava ve deniz kategori toplamları veya sınırlı güvenlik profili için standart kaynak."
+    },
+    {
+      "id": "cyprus-flightglobal-waf-2025",
+      "title": "World Air Forces 2025 Directory",
+      "publisher": "FlightGlobal / Cirium",
+      "category": "reference",
+      "url": "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Hava aracı tip/adet kırılımı için ortak kaynak."
+    },
+    {
+      "id": "cyprus-sipri-arms-transfers",
+      "title": "SIPRI Arms Transfers Database",
+      "publisher": "SIPRI",
+      "category": "reference",
+      "url": "https://www.sipri.org/databases/armstransfers",
+      "date": "2026-04-26",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Transfer ve tedarik çapraz kontrolü için kaynak."
+    }
+  ],
+  "sources": [
+    {
+      "id": "cyprus-primary-defense-profile",
+      "url": "https://www.unroca.org/en/reporting/",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "cyprus-flightglobal-waf-2025",
+      "url": "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "cyprus-sipri-arms-transfers",
+      "url": "https://www.sipri.org/databases/armstransfers",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    }
+  ],
+  "warnings": []
+}
