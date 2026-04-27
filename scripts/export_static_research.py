@@ -19,7 +19,14 @@ const fs = require("fs");
 const vm = require("vm");
 const sandbox = { window: {} };
 vm.createContext(sandbox);
-for (const file of ["src/data.js", "src/countryProfiles.js", "src/europeProfiles.js", "src/americasProfiles.js"]) {
+for (const file of [
+  "src/data.js",
+  "src/countryProfiles.js",
+  "src/europeProfiles.js",
+  "src/americasProfiles.js",
+  "src/standardProfiles.js",
+  "src/asiaProfiles.js"
+]) {
   vm.runInContext(fs.readFileSync(file, "utf8"), sandbox, { filename: file });
 }
 process.stdout.write(JSON.stringify(sandbox.window.ODA_DATA.countries.map((country) => country.id)));
