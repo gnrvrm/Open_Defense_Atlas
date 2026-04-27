@@ -1,6 +1,6 @@
 {
-  "build": "v0.5.0-africa-static-research-20260427",
-  "count": 183,
+  "build": "v0.6.0-oceania-static-research-20260427",
+  "count": 197,
   "countries": [
     "turkiye",
     "poland",
@@ -184,6 +184,20 @@
     "tunisia",
     "uganda",
     "zambia",
-    "zimbabwe"
+    "zimbabwe",
+    "australia",
+    "federated-states-of-micronesia",
+    "fiji",
+    "kiribati",
+    "marshall-islands",
+    "nauru",
+    "new-zealand",
+    "palau",
+    "papua-new-guinea",
+    "samoa",
+    "solomon-islands",
+    "tonga",
+    "tuvalu",
+    "vanuatu"
   ]
 }

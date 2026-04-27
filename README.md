@@ -1,6 +1,6 @@
 # Open Defense Atlas
 
-Statik MVP: Avrupa, Amerika, Asya ve Afrika kıtalarındaki ülkeler üzerinden açık kaynaklı savunma kabiliyetlerini harita üzerinde, kaynak ve belirsizlik bilgisiyle incelemek için hazırlanmış ilk prototip.
+Statik MVP: Avrupa, Amerika, Asya, Afrika ve Avustralya/Okyanusya kıtalarındaki ülkeler üzerinden açık kaynaklı savunma kabiliyetlerini harita üzerinde, kaynak ve belirsizlik bilgisiyle incelemek için hazırlanmış ilk prototip.
 
 ## Canlı demo
 
@@ -30,9 +30,9 @@ C:\msys64\ucrt64\bin\python3.exe -B scripts\export_static_research.py
 
 ## MVP kapsamı
 
-- Avrupa, Amerika, Asya ve Afrika kıtalarını kapsayan ülke seçim listesi
+- Avrupa, Amerika, Asya, Afrika ve Avustralya/Okyanusya kıtalarını kapsayan ülke seçim listesi
 - Türkiye, Polonya ve Yunanistan için elle derinleştirilmiş demo profilleri
-- Diğer Avrupa, Amerika, Asya ve Afrika ülkeleri için standartlaştırılmış ülke ölçeği savunma profilleri
+- Diğer Avrupa, Amerika, Asya, Afrika ve Avustralya/Okyanusya ülkeleri için standartlaştırılmış ülke ölçeği savunma profilleri
 - Askeri güç özeti
 - Askeri güç kutularında tip/adet detay paneli
 - Kaynak, adet/durum, rol ve menzil alanlarıyla genişletilmiş envanter listesi
@@ -65,22 +65,26 @@ Yeni bir ülke eklerken ana uygulama mantığına dokunmadan aşağıdaki ilgili
    - Afrika kıtasındaki ülkeler için standart profil üretir.
    - Afrika ülkeleri için hassas üs veya birlik koordinatı yerine ülke/bölge ölçeğinde genelleştirilmiş gösterim kullanılır.
 
-5. `src/standardProfiles.js`
+5. `src/oceaniaProfiles.js`
+   - Avustralya/Okyanusya kapsamındaki ülkeler için standart profil üretir.
+   - Ada devletlerinde düzenli ordu yoksa güvenlik/sahil güvenlik profili gösterilir.
+
+6. `src/standardProfiles.js`
    - Yeni kıtalar için ortak standart profil üreticidir.
    - Kategori seviyesi askeri güç, envanter, bölgesel harita işaretleri ve kaynak kuyruğu üretir.
 
-6. `src/countryProfiles.js`
+7. `src/countryProfiles.js`
    - Türkiye, Polonya, Yunanistan gibi elle derinleştirilmiş profiller burada tutulur.
    - Tam ülke profili, özet metrikler, askeri güç detay tabloları, envanter kartları, genelleştirilmiş bölgeler ve yerel kaynak kuyruğu burada yönetilir.
    - Platform bağımlı havadan atılan mühimmatlarda `rangeMode: "platform"` kullanın; bu sabit coğrafi daire çizmez.
    - Kıyı/deniz unsurları için `coastal`, ülke sınırı çevresi ölçekli sistemler için `border`, sadece bölgesel bilgi için `regional` kullanın.
 
-7. `server.py`
+8. `server.py`
    - `/api/research/<country_id>` için üretici, resmi kurum, GlobalFirepower, FlightGlobal, SIPRI ve UNROCA gibi kaynak adaptörlerini ekleyin.
    - Ülkeye özel adaptör yoksa uygulama standart açık kaynak referans kuyruğunu döndürür.
    - Adaptörler canlı operasyonel veri üretmemeli; yalnızca yayımlanmış kaynak, tarih, menzil/rol ve doğrulama durumunu döndürmelidir.
 
-8. `api/research/*.json`
+9. `api/research/*.json`
    - GitHub Pages yayını için statik araştırma çıktısıdır.
    - `scripts/export_static_research.py` ile yeniden üretilir; elle düzenlemek yerine kaynak adaptörünü veya ülke profilini güncelleyin.
 
