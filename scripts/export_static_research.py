@@ -25,7 +25,8 @@ for (const file of [
   "src/europeProfiles.js",
   "src/americasProfiles.js",
   "src/standardProfiles.js",
-  "src/asiaProfiles.js"
+  "src/asiaProfiles.js",
+  "src/africaProfiles.js"
 ]) {
   vm.runInContext(fs.readFileSync(file, "utf8"), sandbox, { filename: file });
 }

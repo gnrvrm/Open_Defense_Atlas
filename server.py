@@ -17,7 +17,7 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent
 USER_AGENT = "OpenDefenseAtlas/0.1 local-research-prototype"
-SERVER_BUILD = "v0.4.0-asia-static-research-20260427"
+SERVER_BUILD = "v0.5.0-africa-static-research-20260427"
 FETCH_TIMEOUT_SECONDS = 5
 FETCH_READ_LIMIT = 1_000_000
 
@@ -351,6 +351,8 @@ NO_GFP_COUNTRIES = {
     "barbados",
     "belize",
     "bhutan",
+    "cabo-verde",
+    "comoros",
     "costa-rica",
     "cyprus",
     "dominica",
@@ -360,6 +362,7 @@ NO_GFP_COUNTRIES = {
     "liechtenstein",
     "maldives",
     "malta",
+    "mauritius",
     "monaco",
     "panama",
     "palestine",
@@ -367,6 +370,8 @@ NO_GFP_COUNTRIES = {
     "saint-lucia",
     "saint-vincent-grenadines",
     "san-marino",
+    "sao-tome-principe",
+    "seychelles",
     "timor-leste",
     "vatican-city",
 }
