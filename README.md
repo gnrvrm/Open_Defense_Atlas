@@ -35,6 +35,7 @@ C:\msys64\ucrt64\bin\python3.exe -B scripts\export_static_research.py
 - Diğer Avrupa, Amerika, Asya, Afrika ve Avustralya/Okyanusya ülkeleri için standartlaştırılmış ülke ölçeği savunma profilleri
 - Askeri güç özeti
 - Askeri güç kutularında tip/adet detay paneli
+- GlobalFirepower 2026 sayısal metriklerinden üretilen statik personel, kara, hava ve deniz toplamları
 - Kaynak, adet/durum, rol ve menzil alanlarıyla genişletilmiş envanter listesi
 - Ülke açıldığında otomatik açık kaynak araştırması
 - Kaynak adaptörü üzerinden Roketsan/SIPRI/UNROCA bulgu kuyruğu
@@ -73,18 +74,23 @@ Yeni bir ülke eklerken ana uygulama mantığına dokunmadan aşağıdaki ilgili
    - Yeni kıtalar için ortak standart profil üreticidir.
    - Kategori seviyesi askeri güç, envanter, bölgesel harita işaretleri ve kaynak kuyruğu üretir.
 
-7. `src/countryProfiles.js`
+7. `src/gfpMetrics.js` ve `src/profileMetrics.js`
+   - GFP sayısal alanlarını standart ülke profillerinde sayı olarak gösterir.
+   - Kaynak etiketi doğrudan veri değeri gibi kullanılmamalıdır; `scripts/check_strength_metrics.mjs` bu hatayı yakalamak için çalıştırılır.
+   - Metrik tablosunu yenilemek için `node scripts\build_gfp_metrics.mjs` komutunu çalıştırın.
+
+8. `src/countryProfiles.js`
    - Türkiye, Polonya, Yunanistan gibi elle derinleştirilmiş profiller burada tutulur.
    - Tam ülke profili, özet metrikler, askeri güç detay tabloları, envanter kartları, genelleştirilmiş bölgeler ve yerel kaynak kuyruğu burada yönetilir.
    - Platform bağımlı havadan atılan mühimmatlarda `rangeMode: "platform"` kullanın; bu sabit coğrafi daire çizmez.
    - Kıyı/deniz unsurları için `coastal`, ülke sınırı çevresi ölçekli sistemler için `border`, sadece bölgesel bilgi için `regional` kullanın.
 
-8. `server.py`
+9. `server.py`
    - `/api/research/<country_id>` için üretici, resmi kurum, GlobalFirepower, FlightGlobal, SIPRI ve UNROCA gibi kaynak adaptörlerini ekleyin.
    - Ülkeye özel adaptör yoksa uygulama standart açık kaynak referans kuyruğunu döndürür.
    - Adaptörler canlı operasyonel veri üretmemeli; yalnızca yayımlanmış kaynak, tarih, menzil/rol ve doğrulama durumunu döndürmelidir.
 
-9. `api/research/*.json`
+10. `api/research/*.json`
    - GitHub Pages yayını için statik araştırma çıktısıdır.
    - `scripts/export_static_research.py` ile yeniden üretilir; elle düzenlemek yerine kaynak adaptörünü veya ülke profilini güncelleyin.
 

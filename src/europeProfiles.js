@@ -90,11 +90,11 @@
       : "Bu profil ülke ölçeğinde açık kaynak referansları bağlar; model-model doğrulama ülke adaptörü derinleştikçe genişletilir.";
 
     return {
-      activePersonnel: strengthValue(country, "GFP 2026"),
-      reservePersonnel: strengthValue(country, "GFP 2026", "kaynak"),
-      landSystems: strengthValue(country, "GFP 2026", "sınırlı"),
-      aircraft: strengthValue(country, "Flight 2025", "sınırlı"),
-      navalAssets: country.coast ? strengthValue(country, "GFP 2026", "sahil") : "kara",
+      activePersonnel: strengthValue(country, "sayısal kayıt yok"),
+      reservePersonnel: strengthValue(country, "sayısal kayıt yok", "yedek kayıt yok"),
+      landSystems: strengthValue(country, "sayısal kayıt yok", "sınırlı"),
+      aircraft: strengthValue(country, "sayısal kayıt yok", "sınırlı"),
+      navalAssets: country.coast ? strengthValue(country, "sayısal kayıt yok", "sahil") : "kara",
       note: `${country.name} profili ${country.region} kapsamında, yayınlanmış açık kaynaklardan ülke ölçeğinde ve hassas konum vermeden gösterilir.`,
       details: {
         personnel: {
@@ -104,13 +104,13 @@
           updated: country.gfp ? "2026" : "2026",
           note: noArmyNote,
           rows: [
-            { type: "Toplam askeri/güvenlik personeli", role: "Kaynak profili", active: strengthValue(country, "GFP kaydı", "sınırlı"), activeLabel: "özet" },
-            { type: "Aktif personel", role: "Kaynak doğrulama alanı", active: strengthValue(country, "GFP 2026", "sınırlı"), activeLabel: "aktif" },
-            { type: "Yedek personel", role: "Kaynak doğrulama alanı", active: strengthValue(country, "GFP 2026", "yok/sınırlı"), activeLabel: "yedek" },
+            { type: "Toplam askeri/güvenlik personeli", role: "Kaynak profili", active: strengthValue(country, "sayısal kayıt yok", "sınırlı"), activeLabel: "özet" },
+            { type: "Aktif personel", role: "Kaynak doğrulama alanı", active: strengthValue(country, "sayısal kayıt yok", "sınırlı"), activeLabel: "aktif" },
+            { type: "Yedek personel", role: "Kaynak doğrulama alanı", active: strengthValue(country, "sayısal kayıt yok", "yok/sınırlı"), activeLabel: "yedek" },
             { type: "Paramiliter / iç güvenlik", role: "Ayrı kaynakla doğrulanır", active: "kaynak", activeLabel: "kontrol" },
-            { type: "Hava kuvvetleri personeli", role: "Varsa", active: strengthValue(country, "GFP tahmini", "yok") },
-            { type: "Kara kuvvetleri personeli", role: "Varsa", active: strengthValue(country, "GFP tahmini", "sınırlı") },
-            { type: "Deniz kuvvetleri personeli", role: country.coast ? "Varsa" : "Kıyı yok", active: country.coast ? strengthValue(country, "GFP tahmini", "sınırlı") : "uygulanmaz" }
+            { type: "Hava kuvvetleri personeli", role: "Varsa", active: strengthValue(country, "sayısal kayıt yok", "yok") },
+            { type: "Kara kuvvetleri personeli", role: "Varsa", active: strengthValue(country, "sayısal kayıt yok", "sınırlı") },
+            { type: "Deniz kuvvetleri personeli", role: country.coast ? "Varsa" : "Kıyı yok", active: country.coast ? strengthValue(country, "sayısal kayıt yok", "sınırlı") : "uygulanmaz" }
           ]
         },
         land: {
@@ -120,11 +120,11 @@
           updated: "2026",
           note: "Kategori seviyesi profil; gerçek üs/birlik konumları veya anlık hazırlık bilgisi içermez.",
           rows: [
-            { type: "Tank", role: "Ana muharebe / zırhlı unsur", active: strengthValue(country, "GFP stok", "yok/sınırlı"), activeLabel: "stok" },
-            { type: "Zırhlı ve destek araçları", role: "Mekanize, lojistik ve özel araçlar", active: strengthValue(country, "GFP stok", "sınırlı"), activeLabel: "stok" },
-            { type: "Kundağı motorlu topçu", role: "Ateş destek", active: strengthValue(country, "GFP stok", "yok/sınırlı"), activeLabel: "stok" },
-            { type: "Çekili topçu", role: "Ateş destek", active: strengthValue(country, "GFP stok", "yok/sınırlı"), activeLabel: "stok" },
-            { type: "ÇNRA / roket topçusu", role: "Roket ateş destek", active: strengthValue(country, "GFP stok", "yok/sınırlı"), activeLabel: "stok" }
+            { type: "Tank", role: "Ana muharebe / zırhlı unsur", active: strengthValue(country, "sayısal kayıt yok", "yok/sınırlı"), activeLabel: "stok" },
+            { type: "Zırhlı ve destek araçları", role: "Mekanize, lojistik ve özel araçlar", active: strengthValue(country, "sayısal kayıt yok", "sınırlı"), activeLabel: "stok" },
+            { type: "Kundağı motorlu topçu", role: "Ateş destek", active: strengthValue(country, "sayısal kayıt yok", "yok/sınırlı"), activeLabel: "stok" },
+            { type: "Çekili topçu", role: "Ateş destek", active: strengthValue(country, "sayısal kayıt yok", "yok/sınırlı"), activeLabel: "stok" },
+            { type: "ÇNRA / roket topçusu", role: "Roket ateş destek", active: strengthValue(country, "sayısal kayıt yok", "yok/sınırlı"), activeLabel: "stok" }
           ]
         },
         aircraft: {
@@ -134,11 +134,11 @@
           updated: "2025",
           note: "Hava aracı tip/adet kırılımı FlightGlobal/Cirium üzerinden doğrulanacak kaynak alanıdır; platform bağımlı silahlar sabit harita dairesi üretmez.",
           rows: [
-            { type: "Muharip uçak", role: "Varsa", active: strengthValue(country, "FlightGlobal kaydı", "yok/sınırlı") },
-            { type: "Nakliye", role: "Sabit kanat", active: strengthValue(country, "FlightGlobal kaydı", "yok/sınırlı") },
-            { type: "Özel görev / AEW", role: "Varsa", active: strengthValue(country, "FlightGlobal kaydı", "yok/sınırlı") },
-            { type: "Helikopter", role: "Genel maksat / taarruz", active: strengthValue(country, "FlightGlobal kaydı", "yok/sınırlı") },
-            { type: "Eğitim uçakları", role: "Varsa", active: strengthValue(country, "FlightGlobal kaydı", "yok/sınırlı") }
+            { type: "Muharip uçak", role: "Varsa", active: strengthValue(country, "sayısal kayıt yok", "yok/sınırlı") },
+            { type: "Nakliye", role: "Sabit kanat", active: strengthValue(country, "sayısal kayıt yok", "yok/sınırlı") },
+            { type: "Özel görev / AEW", role: "Varsa", active: strengthValue(country, "sayısal kayıt yok", "yok/sınırlı") },
+            { type: "Helikopter", role: "Genel maksat / taarruz", active: strengthValue(country, "sayısal kayıt yok", "yok/sınırlı") },
+            { type: "Eğitim uçakları", role: "Varsa", active: strengthValue(country, "sayısal kayıt yok", "yok/sınırlı") }
           ]
         },
         naval: {
@@ -150,11 +150,11 @@
             ? "Deniz unsurları kıyı/liman ölçeğinde genelleştirilir; gemi konumu veya gerçek zamanlı hareket gösterilmez."
             : "Kıyısı olmayan ülkelerde deniz unsuru uygulanmaz; lojistik ve kara güvenliği ayrı gösterilir.",
           rows: [
-            { type: "Toplam deniz platformu", role: country.coast ? "GFP toplam varlık" : "Kıyı yok", active: country.coast ? strengthValue(country, "GFP kaydı", "sahil güvenlik") : "uygulanmaz", activeLabel: "adet" },
-            { type: "Fırkateyn / korvet", role: "Suüstü muharip", active: country.coast ? strengthValue(country, "GFP kaydı", "yok/sınırlı") : "uygulanmaz" },
-            { type: "Denizaltı", role: "Sualtı platformu", active: country.coast ? strengthValue(country, "GFP kaydı", "yok/sınırlı") : "uygulanmaz" },
-            { type: "Devriye / sahil güvenlik", role: "Kıyı güvenliği", active: country.coast ? strengthValue(country, "GFP kaydı", "sahil") : "uygulanmaz" },
-            { type: "Mayın harbi", role: "Mayın karşı tedbir", active: country.coast ? strengthValue(country, "GFP kaydı", "yok/sınırlı") : "uygulanmaz" }
+            { type: "Toplam deniz platformu", role: country.coast ? "GFP toplam varlık" : "Kıyı yok", active: country.coast ? strengthValue(country, "sayısal kayıt yok", "sahil güvenlik") : "uygulanmaz", activeLabel: "adet" },
+            { type: "Fırkateyn / korvet", role: "Suüstü muharip", active: country.coast ? strengthValue(country, "sayısal kayıt yok", "yok/sınırlı") : "uygulanmaz" },
+            { type: "Denizaltı", role: "Sualtı platformu", active: country.coast ? strengthValue(country, "sayısal kayıt yok", "yok/sınırlı") : "uygulanmaz" },
+            { type: "Devriye / sahil güvenlik", role: "Kıyı güvenliği", active: country.coast ? strengthValue(country, "sayısal kayıt yok", "sahil") : "uygulanmaz" },
+            { type: "Mayın harbi", role: "Mayın karşı tedbir", active: country.coast ? strengthValue(country, "sayısal kayıt yok", "yok/sınırlı") : "uygulanmaz" }
           ]
         }
       }
@@ -165,6 +165,7 @@
     const src = sourceUrl(country);
     const prefix = country.id.slice(0, 3).replace(/[^a-z]/g, "x");
     const confidence = country.gfp ? 0.54 : 0.48;
+    const quantities = window.ODA_PROFILE_METRICS?.assetQuantities?.(country) || {};
 
     if (isMicro(country)) {
       return [
@@ -174,7 +175,7 @@
           name: `${country.name} güvenlik profili`,
           family: "Sınırlı iç güvenlik / koruma yapısı",
           role: "Ülke ölçeğinde güvenlik özeti",
-          quantity: "sınırlı / özel düzen",
+          quantity: quantities.limitedSecurity || "sınırlı / özel düzen",
           rangeMode: "regional",
           confidence,
           defaultSelected: true,
@@ -188,7 +189,7 @@
           name: "Sivil savunma ve acil durum kapasitesi",
           family: "Askeri olmayan dayanıklılık",
           role: "Kriz ve altyapı koruması",
-          quantity: "kaynak profili",
+          quantity: quantities.civilDefense || "askeri olmayan kriz ve altyapı koruma kapasitesi",
           rangeMode: "regional",
           confidence: 0.46,
           status: "inceleme",
@@ -201,7 +202,7 @@
           name: "Sınır/altyapı gözetleme kaydı",
           family: "Kamu güvenliği ve altyapı gözetimi",
           role: "Hassas konum vermeyen durum farkındalığı",
-          quantity: "kaynak profili",
+          quantity: quantities.maritimeSecurity || "sınır ve altyapı gözetleme kapasitesi",
           rangeMode: "regional",
           confidence: 0.44,
           status: "yaklaşık",
@@ -218,7 +219,7 @@
         name: "Tank ve zırhlı araç envanteri",
         family: "Kara muharebe sistemleri",
         role: "Kara muharebe ve mekanize kabiliyet",
-        quantity: "GFP kategori kaydı",
+        quantity: quantities.landInventory || "sayısal kırılım yok; kaynak kuyruğunda",
         rangeMode: "regional",
         confidence,
         defaultSelected: true,
@@ -232,7 +233,7 @@
         name: "Topçu ve roket topçusu",
         family: "Ateş destek sistemleri",
         role: "Kara ateş destek",
-        quantity: "GFP kategori kaydı",
+        quantity: quantities.precisionFires || "platforma bağlı; kaynak kuyruğunda",
         rangeMode: "regional",
         confidence,
         status: "tahmini",
@@ -245,7 +246,7 @@
         name: "Muharip hava araçları",
         family: "Sabit kanat hava platformları",
         role: "Hava savunma / taarruz / devriye",
-        quantity: "FlightGlobal tip kırılımı",
+        quantity: quantities.airPlatforms || "sayısal kırılım yok; kaynak kuyruğunda",
         rangeMode: "regional",
         confidence: 0.56,
         status: "kaynaklı",
@@ -258,7 +259,7 @@
         name: "Nakliye, helikopter ve özel görev hava araçları",
         family: "Destek hava platformları",
         role: "Nakliye, eğitim, arama-kurtarma ve özel görev",
-        quantity: "FlightGlobal tip kırılımı",
+        quantity: quantities.airPlatforms || "sayısal kırılım yok; kaynak kuyruğunda",
         rangeMode: "regional",
         confidence: 0.56,
         status: "kaynaklı",
@@ -271,11 +272,11 @@
         name: "Hava savunma katmanı",
         family: "Kısa/orta/uzun menzilli hava savunma",
         role: "Ülke ölçeğinde hava savunma özeti",
-        quantity: "kaynak profili",
+        quantity: quantities.airDefense || "ülke ölçeğinde hava savunma profili",
         rangeMode: "border",
         confidence: 0.52,
         status: "inceleme",
-        sourceTag: "SIPRI / GFP / resmi kaynak kontrolü",
+        sourceTag: "SIPRI / GFP / resmi kaynak doğrulaması",
         sourceUrl: SIPRI
       },
       {
@@ -284,7 +285,7 @@
         name: "Radar ve komuta-kontrol ağı",
         family: "Hava/deniz/kara durum farkındalığı",
         role: "Erken ihbar ve sensör füzyonu",
-        quantity: "ağ kaydı",
+        quantity: quantities.sensorNetwork || "ülke ölçeğinde sensör profili",
         rangeMode: "regional",
         confidence: 0.5,
         status: "yaklaşık",
@@ -297,7 +298,7 @@
         name: "Hassas taarruz ve roket topçusu",
         family: "Platform/konfigürasyon bağımlı sistemler",
         role: "Uzun menzil veya hassas ateş kabiliyeti",
-        quantity: "SIPRI/UNROCA çapraz kontrol",
+        quantity: quantities.precisionFires || "platforma bağlı; kaynak kuyruğunda",
         rangeMode: "platform",
         coverageNote:
           "Ülke ölçeğinde açık kaynak kaydıdır. Platforma bağlı veya mühimmat tipine göre değişen sistemlerde sabit coğrafi menzil dairesi çizilmez.",
@@ -316,7 +317,7 @@
           name: "Deniz platformları",
           family: "Fırkateyn, korvet, devriye ve destek unsurları",
           role: "Deniz güvenliği ve suüstü kabiliyeti",
-          quantity: "GFP kategori kaydı",
+          quantity: quantities.navalPlatforms || "sahil güvenlik / devriye kapasitesi",
           rangeMode: "coastal",
           confidence,
           status: "tahmini",
@@ -329,7 +330,7 @@
           name: "Kıyı/deniz savunma kabiliyeti",
           family: "Kıyı gözetleme, devriye ve varsa gemisavar sistemler",
           role: "Kıyı güvenliği ve deniz alanı farkındalığı",
-          quantity: "kaynak profili",
+          quantity: quantities.coastalDefense || "kıyı gözetleme ve deniz alanı farkındalığı",
           rangeMode: "coastal",
           confidence: 0.5,
           status: "inceleme",
@@ -346,7 +347,7 @@
         name: country.nuclear ? "Stratejik caydırıcılık kaydı" : "Geniş ölçekli güç projeksiyonu",
         family: country.nuclear ? "Nükleer/stratejik kapasite ülkesi" : "Uzun menzil ve dış görev kabiliyeti",
         role: "Stratejik caydırıcılık / güç projeksiyonu",
-        quantity: "ülke ölçeği kaynak profili",
+        quantity: quantities.strategicProfile || "ülke ölçeği stratejik profil",
         rangeMode: "platform",
         coverageNote:
           "Stratejik ve platform bağımlı kabiliyetler için sabit coğrafi menzil dairesi çizilmez; yalnızca ülke ölçeğinde kaynaklı kapasite kaydı tutulur.",
@@ -477,11 +478,12 @@
     return {
       id: country.id,
       name: country.name,
+      continent: "europe",
       headline: `${country.name} savunma görünümü`,
       center: country.center,
       zoom: country.tier === "micro" ? 10 : country.id === "russia" ? 4 : 6,
       sourceScore: country.gfp ? (country.major ? 66 : 60) : 52,
-      strength: makeStrength(country),
+      strength: window.ODA_PROFILE_METRICS?.makeStrength(country) || makeStrength(country),
       outline: makeOutline(country.box),
       assets: makeAssets(country),
       sites: makeSites(country),

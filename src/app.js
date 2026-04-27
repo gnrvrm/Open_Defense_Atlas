@@ -4,6 +4,16 @@
   const params = new URLSearchParams(window.location.search);
   const requestedCountryId = params.get("country");
   const initialCountry = countries.find((country) => country.id === requestedCountryId) || countries[0];
+  const continentOrder = ["europe", "asia", "africa", "north-america", "south-america", "oceania", "other"];
+  const continentLabels = {
+    europe: "Avrupa",
+    asia: "Asya",
+    africa: "Afrika",
+    "north-america": "Kuzey Amerika",
+    "south-america": "Güney Amerika",
+    oceania: "Okyanusya / Avustralya",
+    other: "Diğer"
+  };
 
   const state = {
     countryId: initialCountry.id,
@@ -83,7 +93,7 @@
   }
 
   function formatRange(asset) {
-    return asset?.rangeLabel || (asset?.rangeKm ? `${asset.rangeKm} km` : "envanter kaydı");
+    return asset?.rangeLabel || (asset?.rangeKm ? `${asset.rangeKm} km` : "menzil bilgisi yok");
   }
 
   function rangeModeLabel(asset) {
@@ -174,13 +184,37 @@
     return labels[stateName] || stateName;
   }
 
-  function seedControls() {
+  function sortCountriesByName(left, right) {
+    return left.name.localeCompare(right.name, "tr", { sensitivity: "base" });
+  }
+
+  function renderCountryOptions() {
+    els.countrySelect.innerHTML = "";
+
+    const groups = new Map(continentOrder.map((continent) => [continent, []]));
     countries.forEach((country) => {
-      const option = document.createElement("option");
-      option.value = country.id;
-      option.textContent = country.name;
-      els.countrySelect.appendChild(option);
+      const continent = groups.has(country.continent) ? country.continent : "other";
+      groups.get(continent).push(country);
     });
+
+    continentOrder.forEach((continent) => {
+      const groupCountries = groups.get(continent).sort(sortCountriesByName);
+      if (!groupCountries.length) return;
+
+      const optgroup = document.createElement("optgroup");
+      optgroup.label = continentLabels[continent];
+      groupCountries.forEach((country) => {
+        const option = document.createElement("option");
+        option.value = country.id;
+        option.textContent = country.name;
+        optgroup.appendChild(option);
+      });
+      els.countrySelect.appendChild(optgroup);
+    });
+  }
+
+  function seedControls() {
+    renderCountryOptions();
 
     layers.forEach((layer) => {
       const button = document.createElement("button");

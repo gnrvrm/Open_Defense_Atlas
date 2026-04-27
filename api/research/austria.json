@@ -1,7 +1,7 @@
 {
   "countryId": "austria",
-  "generatedAt": "2026-04-27T16:09:57Z",
-  "build": "v0.6.0-oceania-static-research-20260427",
+  "generatedAt": "2026-04-27T17:00:45Z",
+  "build": "v0.6.2-country-validation-20260427",
   "mode": "static-research-export",
   "findings": [
     {

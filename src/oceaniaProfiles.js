@@ -14,5 +14,5 @@
     { id: "tonga", name: "Tonga", center: [-20.0, -175.2], box: [-22.4, -176.4, -15.5, -173.7], coast: true, tier: "small", region: "Polinezya" },
     { id: "tuvalu", name: "Tuvalu", center: [-7.1, 177.7], box: [-10.8, 176.0, -5.6, 179.9], coast: true, tier: "no-standing-army", region: "Polinezya" },
     { id: "vanuatu", name: "Vanuatu", center: [-16.0, 167.0], box: [-20.3, 166.4, -13.0, 170.3], coast: true, tier: "no-standing-army", region: "Melanezya" }
-  ]);
+  ], "oceania");
 })();

@@ -883,7 +883,7 @@
           name: "Ege sensör ağı",
           family: "Radar ve gözetleme ağı",
           role: "Deniz/hava durum farkındalığı",
-          quantity: "ağ kaydı",
+          quantity: "ülke ölçeğinde sensör profili",
           rangeMode: "regional",
           confidence: 0.52,
           status: "yaklaşık",

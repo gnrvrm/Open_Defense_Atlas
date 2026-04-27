@@ -54,5 +54,5 @@
     { id: "uganda", name: "Uganda", gfp: "uganda", center: [1.3, 32.3], box: [-1.5, 29.6, 4.3, 35.0], region: "Doğu Afrika" },
     { id: "zambia", name: "Zambiya", gfp: "zambia", center: [-13.1, 27.8], box: [-18.1, 21.9, -8.2, 33.7], region: "Güney Afrika" },
     { id: "zimbabwe", name: "Zimbabve", gfp: "zimbabwe", center: [-19.0, 29.2], box: [-22.4, 25.2, -15.6, 33.1], region: "Güney Afrika" }
-  ]);
+  ], "africa");
 })();

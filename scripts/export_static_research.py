@@ -21,6 +21,8 @@ const sandbox = { window: {} };
 vm.createContext(sandbox);
 for (const file of [
   "src/data.js",
+  "src/gfpMetrics.js",
+  "src/profileMetrics.js",
   "src/countryProfiles.js",
   "src/europeProfiles.js",
   "src/americasProfiles.js",

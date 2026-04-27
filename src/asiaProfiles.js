@@ -43,5 +43,5 @@
     { id: "uzbekistan", name: "Özbekistan", gfp: "uzbekistan", center: [41.4, 64.6], box: [37.2, 55.9, 45.6, 73.2], region: "Orta Asya" },
     { id: "vietnam", name: "Vietnam", gfp: "vietnam", center: [16.2, 107.9], box: [8.2, 102.1, 23.4, 109.5], coast: true, region: "Güneydoğu Asya" },
     { id: "yemen", name: "Yemen", gfp: "yemen", center: [15.6, 48.0], box: [12.0, 42.5, 19.0, 54.5], coast: true, region: "Arap Yarımadası" }
-  ]);
+  ], "asia");
 })();

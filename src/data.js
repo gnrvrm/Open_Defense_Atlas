@@ -47,6 +47,7 @@ window.ODA_DATA = {
     {
       id: "turkiye",
       name: "Türkiye",
+      continent: "europe",
       headline: "Türkiye savunma görünümü",
       center: [39.0, 35.2],
       zoom: 6,
@@ -581,6 +582,7 @@ window.ODA_DATA = {
     {
       id: "poland",
       name: "Polonya",
+      continent: "europe",
       headline: "Polonya savunma görünümü",
       center: [52.0, 19.1],
       zoom: 6,
@@ -713,6 +715,7 @@ window.ODA_DATA = {
     {
       id: "greece",
       name: "Yunanistan",
+      continent: "europe",
       headline: "Yunanistan savunma görünümü",
       center: [39.1, 22.5],
       zoom: 6,
@@ -771,7 +774,7 @@ window.ODA_DATA = {
           category: "sensor",
           name: "Ege sensör ağı",
           family: "Radar ve gözetleme",
-          quantity: "ağ kaydı",
+          quantity: "ülke ölçeğinde sensör profili",
           rangeKm: 320,
           rangeMode: "border",
           confidence: 0.51
