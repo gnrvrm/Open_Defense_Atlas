@@ -17,7 +17,7 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent
 USER_AGENT = "OpenDefenseAtlas/0.1 local-research-prototype"
-SERVER_BUILD = "v0.2.3-static-research-20260426"
+SERVER_BUILD = "v0.3.0-americas-static-research-20260427"
 FETCH_TIMEOUT_SECONDS = 5
 FETCH_READ_LIMIT = 1_000_000
 
@@ -338,15 +338,30 @@ SOURCE_CONFIGS: dict[str, list[dict[str, Any]]] = {
 GFP_ID_OVERRIDES = {
     "bosnia-herzegovina": "bosnia-and-herzegovina",
     "north-macedonia": "macedonia",
+    "trinidad-tobago": "trinidad-and-tobago",
+    "united-states": "united-states-of-america",
     "united-kingdom": "united-kingdom",
 }
 
 NO_GFP_COUNTRIES = {
+    "antigua-barbuda",
     "andorra",
+    "bahamas",
+    "barbados",
+    "belize",
+    "costa-rica",
     "cyprus",
+    "dominica",
+    "grenada",
+    "guyana",
+    "haiti",
     "liechtenstein",
     "malta",
     "monaco",
+    "panama",
+    "saint-kitts-nevis",
+    "saint-lucia",
+    "saint-vincent-grenadines",
     "san-marino",
     "vatican-city",
 }

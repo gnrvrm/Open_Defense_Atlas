@@ -1,0 +1,68 @@
+{
+  "countryId": "saint-vincent-grenadines",
+  "generatedAt": "2026-04-27T15:27:54Z",
+  "build": "v0.3.0-americas-static-research-20260427",
+  "mode": "static-research-export",
+  "findings": [
+    {
+      "id": "saint-vincent-grenadines-primary-defense-profile",
+      "title": "Saint Vincent Grenadines reporting and defense reference",
+      "publisher": "UNROCA / open-source references",
+      "category": "reference",
+      "url": "https://www.unroca.org/en/reporting/",
+      "date": "2026-04-27",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Ülke ölçeğinde personel, kara, hava ve deniz kategori toplamları veya sınırlı güvenlik profili için standart kaynak."
+    },
+    {
+      "id": "saint-vincent-grenadines-flightglobal-waf-2025",
+      "title": "World Air Forces 2025 Directory",
+      "publisher": "FlightGlobal / Cirium",
+      "category": "reference",
+      "url": "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article",
+      "date": "2026-04-27",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Hava aracı tip/adet kırılımı için ortak kaynak."
+    },
+    {
+      "id": "saint-vincent-grenadines-sipri-arms-transfers",
+      "title": "SIPRI Arms Transfers Database",
+      "publisher": "SIPRI",
+      "category": "reference",
+      "url": "https://www.sipri.org/databases/armstransfers",
+      "date": "2026-04-27",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Transfer ve tedarik çapraz kontrolü için kaynak."
+    }
+  ],
+  "sources": [
+    {
+      "id": "saint-vincent-grenadines-primary-defense-profile",
+      "url": "https://www.unroca.org/en/reporting/",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "saint-vincent-grenadines-flightglobal-waf-2025",
+      "url": "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "saint-vincent-grenadines-sipri-arms-transfers",
+      "url": "https://www.sipri.org/databases/armstransfers",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    }
+  ],
+  "warnings": []
+}
