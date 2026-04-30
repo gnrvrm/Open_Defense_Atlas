@@ -5,13 +5,14 @@ const files = [
   "src/data.js",
   "src/gfpMetrics.js",
   "src/profileMetrics.js",
-  "src/countryProfiles.js",
+  "src/osintSites.js",
+  "src/generatedProfiles.js",
   "src/europeProfiles.js",
   "src/americasProfiles.js",
-  "src/standardProfiles.js",
   "src/asiaProfiles.js",
   "src/africaProfiles.js",
-  "src/oceaniaProfiles.js"
+  "src/oceaniaProfiles.js",
+  "src/countryProfiles.js"
 ];
 
 const sandbox = { window: {} };

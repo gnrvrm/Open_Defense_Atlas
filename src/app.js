@@ -45,6 +45,7 @@
     strengthDetail: document.getElementById("strengthDetail"),
     countryHeadline: document.getElementById("countryHeadline"),
     selectedRange: document.getElementById("selectedRange"),
+    mapEmptyNote: document.getElementById("mapEmptyNote"),
     resetView: document.getElementById("resetView"),
     scanButton: document.getElementById("scanButton"),
     legend: document.getElementById("legend"),
@@ -62,7 +63,9 @@
 
   const map = L.map("map", {
     zoomControl: false,
-    preferCanvas: false
+    preferCanvas: false,
+    zoomDelta: 0.5,
+    zoomSnap: 0.25
   });
 
   L.control.zoom({ position: "topright" }).addTo(map);
@@ -77,6 +80,7 @@
   const rangeLayer = L.layerGroup().addTo(map);
   const selectedRangeLayer = L.layerGroup().addTo(map);
   const outlineLayer = L.layerGroup().addTo(map);
+  let resizeFrame = null;
 
   renderVersionBadge();
 
@@ -93,7 +97,7 @@
   }
 
   function formatRange(asset) {
-    return asset?.rangeLabel || (asset?.rangeKm ? `${asset.rangeKm} km` : "menzil bilgisi yok");
+    return asset?.rangeLabel || (asset?.rangeKm ? `${asset.rangeKm} km` : "kaynaklı menzil yok");
   }
 
   function rangeModeLabel(asset) {
@@ -127,6 +131,51 @@
         fillOpacity: 1,
         interactive: false
       }).addTo(selectedRangeLayer);
+    });
+  }
+
+  function drawCountryCoverage(country, color) {
+    L.polygon(country.outline, {
+      color,
+      weight: 2.4,
+      opacity: 0.82,
+      fillColor: color,
+      fillOpacity: 0.065,
+      dashArray: "10 8",
+      interactive: false
+    }).addTo(selectedRangeLayer);
+  }
+
+  function extendBounds(bounds, nextBounds) {
+    if (!nextBounds || !nextBounds.isValid()) return bounds;
+    if (!bounds) {
+      return L.latLngBounds(nextBounds.getSouthWest(), nextBounds.getNorthEast());
+    }
+    return bounds.extend(nextBounds);
+  }
+
+  function getDrawingBounds(fallbackBounds) {
+    let bounds = extendBounds(null, fallbackBounds);
+
+    [overlay, rangeLayer, selectedRangeLayer].forEach((group) => {
+      group.getLayers().forEach((layer) => {
+        if (typeof layer.getBounds !== "function") return;
+        bounds = extendBounds(bounds, layer.getBounds());
+      });
+    });
+
+    return bounds;
+  }
+
+  function fitMapToDrawing(outline) {
+    const bounds = getDrawingBounds(outline.getBounds());
+    if (!bounds || !bounds.isValid()) return;
+
+    map.fitBounds(bounds, {
+      paddingTopLeft: [14, 14],
+      paddingBottomRight: [14, 26],
+      maxZoom: 8,
+      animate: false
     });
   }
 
@@ -177,6 +226,7 @@
       pending: "bekliyor",
       review: "inceleme",
       verified: "doğrulandı",
+      candidate: "aday",
       loading: "aranıyor",
       error: "hata",
       fallback: "yerel liste"
@@ -221,6 +271,8 @@
       button.type = "button";
       button.className = "layer-button active";
       button.dataset.layer = layer.id;
+      button.setAttribute("aria-label", `Envanter filtresi: ${layer.label}`);
+      button.title = `Envanter filtresi: ${layer.label}`;
       button.style.setProperty("--layer-color", layer.color);
       button.innerHTML = `
         <i data-lucide="${layer.icon}" aria-hidden="true"></i>
@@ -277,7 +329,7 @@
       (largest, asset) => Math.max(largest, Number(asset.rangeKm) || 0),
       0
     );
-    els.rangeLabel.textContent = maxRange ? `${maxRange} km üst değer` : "menzil yok";
+    els.rangeLabel.textContent = maxRange ? `${maxRange} km üst değer` : "çizilebilir menzil yok";
     els.selectedRange.textContent = selectedAsset
       ? `${selectedAsset.name}: ${formatRange(selectedAsset)}${selectedAsset.rangeKm ? ` ${rangeModeLabel(selectedAsset)}` : ""}${
           selectedAsset.rangeMode === "platform" ? " · sabit coğrafi daire yok" : ""
@@ -385,6 +437,9 @@
     rangeLayer.clearLayers();
     selectedRangeLayer.clearLayers();
     outlineLayer.clearLayers();
+    if (els.mapEmptyNote) {
+      els.mapEmptyNote.hidden = sites.length > 0;
+    }
 
     const outline = L.polygon(country.outline, {
       color: "#1f2937",
@@ -403,17 +458,19 @@
         return largest;
       }, null);
 
-      L.circle([site.lat, site.lng], {
-        radius: site.radiusKm * 1000,
-        color,
-        weight: 1.5,
-        opacity: 0.72,
-        fillColor: color,
-        fillOpacity: 0.075,
-        interactive: false
-      }).addTo(overlay);
+      if (site.showArea) {
+        L.circle([site.lat, site.lng], {
+          radius: site.radiusKm * 1000,
+          color,
+          weight: 1.5,
+          opacity: 0.72,
+          fillColor: color,
+          fillOpacity: 0.075,
+          interactive: false
+        }).addTo(overlay);
+      }
 
-      if (rangeAsset && ["attack", "defense", "sensor", "naval"].includes(site.type)) {
+      if (site.showRange && rangeAsset && ["attack", "defense", "sensor", "naval"].includes(site.type)) {
         L.circle([site.lat, site.lng], {
           radius: rangeAsset.rangeKm * 1000,
           color,
@@ -443,10 +500,18 @@
     });
 
     renderSelectedRange(country, selectedAsset);
+    fitMapToDrawing(outline);
+  }
 
-    if (!map.getBounds().isValid() || !map.getBounds().intersects(outline.getBounds())) {
-      map.fitBounds(outline.getBounds(), { padding: [38, 38], maxZoom: country.zoom });
+  function scheduleMapRefit() {
+    if (resizeFrame) {
+      cancelAnimationFrame(resizeFrame);
     }
+
+    resizeFrame = requestAnimationFrame(() => {
+      resizeFrame = null;
+      render();
+    });
   }
 
   function renderSelectedRange(country, selectedAsset) {
@@ -479,21 +544,16 @@
 
     if (selectedAsset.rangeMode === "coastal") {
       const navalSites = country.sites.filter((site) => site.type === "naval");
-      const origins = navalSites.length ? navalSites : [{ lat: country.center[0], lng: country.center[1] }];
-      drawRangeFromOrigins(origins, selectedAsset, color);
+      const origins = navalSites.filter((site) => site.showRange);
+      if (origins.length) {
+        drawRangeFromOrigins(origins, selectedAsset, color);
+      } else {
+        drawCountryCoverage(country, color);
+      }
       return;
     }
 
-    L.circle(country.center, {
-      radius: selectedAsset.rangeKm * 1000,
-      color,
-      weight: 2,
-      opacity: 0.75,
-      fillColor: color,
-      fillOpacity: 0.07,
-      dashArray: "10 8",
-      interactive: false
-    }).addTo(selectedRangeLayer);
+    drawCountryCoverage(country, color);
   }
 
   function renderAssets(assets, selectedAsset) {
@@ -615,7 +675,9 @@
     return dedupeSources(country.sources);
   }
 
-  function researchUrls(countryId) {
+  function researchUrls(country) {
+    const countryId = typeof country === "string" ? country : country.id;
+    const countryName = typeof country === "string" ? "" : country.name;
     const cacheKey = `v=${encodeURIComponent(window.ODA_META?.version || "dev")}&t=${Date.now()}`;
     const staticUrl = new URL(`api/research/${countryId}.json`, window.location.href);
     staticUrl.search = cacheKey;
@@ -623,13 +685,18 @@
     const isLocalHost = ["127.0.0.1", "localhost", "::1"].includes(window.location.hostname);
     if (!isLocalHost) return [staticUrl.toString()];
 
-    return [`/api/research/${countryId}?_=${Date.now()}`, staticUrl.toString()];
+    const dynamicUrl = new URL(`/api/research/${countryId}`, window.location.href);
+    dynamicUrl.searchParams.set("_", Date.now().toString());
+    if (countryName) {
+      dynamicUrl.searchParams.set("name", countryName);
+    }
+    return [dynamicUrl.toString(), staticUrl.toString()];
   }
 
-  async function fetchResearch(countryId) {
+  async function fetchResearch(country) {
     const errors = [];
 
-    for (const url of researchUrls(countryId)) {
+    for (const url of researchUrls(country)) {
       try {
         const response = await fetch(url);
         if (!response.ok) throw new Error(`API ${response.status}`);
@@ -660,7 +727,7 @@
     els.scanButton.disabled = true;
 
     try {
-      const data = await fetchResearch(country.id);
+      const data = await fetchResearch(country);
       state.research = {
         status: "ready",
         countryId: country.id,
@@ -698,7 +765,9 @@
     const layer = getLayer(site.type);
     const relatedAssets = getInventory(country).filter((asset) => asset.category === site.type);
     const assetText = relatedAssets.length
-      ? relatedAssets.map((asset) => `${asset.name} (${asset.rangeKm} km)`).join(", ")
+      ? relatedAssets
+          .map((asset) => (asset.rangeKm ? `${asset.name} (${asset.rangeKm} km)` : asset.name))
+          .join(", ")
       : "Doğrudan unsur bağlı değil";
 
     els.detailPanel.innerHTML = `
@@ -710,9 +779,10 @@
       <div class="detail-list">
         <div class="detail-row"><span>Durum</span><strong>${site.status}</strong></div>
         <div class="detail-row"><span>Hassasiyet</span><strong>${site.precision}</strong></div>
-        <div class="detail-row"><span>Alan</span><strong>${site.radiusKm} km</strong></div>
+        <div class="detail-row"><span>Alan</span><strong>${site.showArea ? `${site.radiusKm} km` : "nokta referansı"}</strong></div>
         <div class="detail-row"><span>İlişkili unsur</span><strong>${assetText}</strong></div>
       </div>
+      ${site.sourceUrl ? `<a class="detail-source-link" href="${site.sourceUrl}" target="_blank" rel="noreferrer">Kaynağı aç</a>` : ""}
     `;
   }
 
@@ -720,8 +790,8 @@
     if (!asset) {
       els.detailPanel.innerHTML = `
         <div class="empty-state">
-          <i data-lucide="map-pin"></i>
-          <p>Haritadaki bir bölgeyi veya envanter kaydını seçin.</p>
+          <i data-lucide="info"></i>
+          <p>Envanterden bir kayıt seçin.</p>
         </div>
       `;
       return;
@@ -761,17 +831,13 @@
     nextParams.set("country", country.id);
     nextParams.delete("asset");
     window.history.replaceState(null, "", `${window.location.pathname}?${nextParams.toString()}`);
-    map.setView(country.center, country.zoom);
-    map.invalidateSize();
     render();
     startResearch(country);
   }
 
   els.countrySelect.addEventListener("change", (event) => selectCountry(event.target.value));
   els.resetView.addEventListener("click", () => {
-    const country = getCountry();
     state.selectedSiteId = null;
-    map.setView(country.center, country.zoom);
     render();
   });
   els.scanButton.addEventListener("click", () => {
@@ -784,10 +850,9 @@
   });
 
   seedControls();
-  map.setView(getCountry().center, getCountry().zoom);
   render();
   startResearch(getCountry());
-  window.addEventListener("load", () => map.invalidateSize());
-  window.addEventListener("resize", () => map.invalidateSize());
-  requestAnimationFrame(() => map.invalidateSize());
+  window.addEventListener("load", scheduleMapRefit);
+  window.addEventListener("resize", scheduleMapRefit);
+  requestAnimationFrame(scheduleMapRefit);
 })();

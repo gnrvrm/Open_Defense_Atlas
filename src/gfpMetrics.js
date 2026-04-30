@@ -1,7 +1,7 @@
 (function () {
   window.ODA_GFP_METRICS = {
   "build": "gfp-2026-static-metrics",
-  "generated": "2026-04-27",
+  "generated": "2026-04-30",
   "countries": {
     "afghanistan": {
       "source": "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=afghanistan",
@@ -1712,6 +1712,44 @@
       "naval": {
         "patrolVessels": "20",
         "total": "20"
+      }
+    },
+    "greece": {
+      "source": "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=greece",
+      "updated": "2026",
+      "personnel": {
+        "total": "419,050",
+        "active": "142,700",
+        "reserve": "221,350",
+        "paramilitary": "55,000",
+        "airForce": "42,500",
+        "army": "200,000",
+        "navy": "30,000"
+      },
+      "air": {
+        "total": "560",
+        "ready": "392*",
+        "fighters": "178",
+        "transports": "17",
+        "trainers": "86",
+        "specialMission": "8",
+        "helicopters": "285",
+        "attackHelicopters": "28"
+      },
+      "land": {
+        "tanks": "1,344",
+        "armoredVehicles": "56,416",
+        "selfPropelledArtillery": "589",
+        "towedArtillery": "698",
+        "rocketProjectors": "152",
+        "total": "59,199"
+      },
+      "naval": {
+        "frigates": "14",
+        "submarines": "9",
+        "patrolVessels": "45",
+        "mineWarfare": "3",
+        "total": "71"
       }
     },
     "guatemala": {
@@ -3574,6 +3612,45 @@
         "total": "65"
       }
     },
+    "poland": {
+      "source": "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=poland",
+      "updated": "2026",
+      "personnel": {
+        "total": "650,000",
+        "active": "250,000",
+        "reserve": "350,000",
+        "paramilitary": "50,000",
+        "airForce": "16,500",
+        "army": "110,000",
+        "navy": "8,240"
+      },
+      "air": {
+        "total": "457",
+        "ready": "297*",
+        "fighters": "58",
+        "attack": "12",
+        "transports": "44",
+        "trainers": "112",
+        "specialMission": "11",
+        "helicopters": "224",
+        "attackHelicopters": "29"
+      },
+      "land": {
+        "tanks": "798",
+        "armoredVehicles": "57,972",
+        "selfPropelledArtillery": "593",
+        "rocketProjectors": "298",
+        "total": "59,661"
+      },
+      "naval": {
+        "frigates": "2",
+        "corvettes": "2",
+        "submarines": "1",
+        "patrolVessels": "3",
+        "mineWarfare": "29",
+        "total": "37"
+      }
+    },
     "portugal": {
       "source": "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=portugal",
       "updated": "2026",
@@ -4601,6 +4678,47 @@
         "corvettes": "1",
         "patrolVessels": "30",
         "total": "32"
+      }
+    },
+    "Turkey": {
+      "source": "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=Turkey",
+      "updated": "2026",
+      "personnel": {
+        "total": "1,011,000",
+        "active": "481,000",
+        "reserve": "380,000",
+        "paramilitary": "150,000",
+        "airForce": "52,850",
+        "army": "401,500",
+        "navy": "100,000"
+      },
+      "air": {
+        "total": "1,101",
+        "ready": "771*",
+        "fighters": "201",
+        "transports": "84",
+        "trainers": "301",
+        "specialMission": "27",
+        "tankers": "7",
+        "helicopters": "509",
+        "attackHelicopters": "111"
+      },
+      "land": {
+        "tanks": "2,284",
+        "armoredVehicles": "98,193",
+        "selfPropelledArtillery": "1,045",
+        "towedArtillery": "635",
+        "rocketProjectors": "237",
+        "total": "102,394"
+      },
+      "naval": {
+        "helicopterCarriers": "1",
+        "frigates": "17",
+        "corvettes": "9",
+        "submarines": "14",
+        "patrolVessels": "40",
+        "mineWarfare": "11",
+        "total": "92"
       }
     },
     "turkmenistan": {

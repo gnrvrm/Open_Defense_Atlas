@@ -65,7 +65,7 @@ async function collectGfpSlugs() {
 async function fetchHtml(slug) {
   const response = await fetch(gfpUrl(slug), {
     headers: {
-      "User-Agent": "OpenDefenseAtlas/0.6.2 (+https://gnrvrm.github.io/Open_Defense_Atlas/)"
+      "User-Agent": "OpenDefenseAtlas/0.7.0 (+https://gnrvrm.github.io/Open_Defense_Atlas/)"
     }
   });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -185,7 +185,7 @@ async function main() {
 
   const payload = {
     build: "gfp-2026-static-metrics",
-    generated: "2026-04-27",
+    generated: "2026-04-30",
     countries,
     errors
   };

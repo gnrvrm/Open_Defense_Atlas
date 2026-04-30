@@ -1,6 +1,6 @@
 (function () {
   const GFP = "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=";
-  const FLIGHTGLOBAL_2025 = "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article";
+  const FLIGHTGLOBAL_2026 = "https://www.flightglobal.com/defence/2026-world-air-forces-directory/165267.article";
   const UNROCA = "https://www.unroca.org/en/reporting/";
 
   function sourceUrl(country) {
@@ -162,8 +162,8 @@
         },
         aircraft: {
           title: "Hava Aracı Detayı",
-          source: "Global Firepower 2026 + FlightGlobal World Air Forces 2025",
-          sourceUrl: country.gfp ? srcUrl : FLIGHTGLOBAL_2025,
+          source: "Global Firepower 2026 + FlightGlobal World Air Forces 2026",
+          sourceUrl: country.gfp ? srcUrl : FLIGHTGLOBAL_2026,
           updated: metrics?.updated || "2025/2026",
           note: "Hava aracı toplamları GFP kategori verisinden gelir; tip/model kırılımı FlightGlobal/Cirium adaptörü derinleştikçe ayrıştırılır.",
           rows: [

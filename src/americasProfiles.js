@@ -1,6 +1,6 @@
 (function () {
   const GFP = "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=";
-  const FLIGHTGLOBAL_2025 = "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article";
+  const FLIGHTGLOBAL_2026 = "https://www.flightglobal.com/defence/2026-world-air-forces-directory/165267.article";
   const SIPRI = "https://www.sipri.org/databases/armstransfers";
   const UNROCA = "https://www.unroca.org/en/reporting/";
 
@@ -41,6 +41,31 @@
     { id: "uruguay", name: "Uruguay", gfp: "uruguay", center: [-32.8, -56.0], box: [-35.1, -58.5, -30.0, -53.1], coast: true, region: "Güney Amerika" },
     { id: "venezuela", name: "Venezuela", gfp: "venezuela", center: [7.0, -66.0], box: [0.6, -73.4, 12.3, -59.8], coast: true, region: "Güney Amerika" }
   ];
+
+  if (window.ODA_GENERATED_PROFILES) {
+    const southAmerica = new Set([
+      "argentina",
+      "bolivia",
+      "brazil",
+      "chile",
+      "colombia",
+      "ecuador",
+      "guyana",
+      "paraguay",
+      "peru",
+      "suriname",
+      "uruguay",
+      "venezuela"
+    ]);
+    window.ODA_GENERATED_PROFILES.addCountries(
+      americas.map((country) => ({
+        ...country,
+        continent: southAmerica.has(country.id) ? "south-america" : "north-america"
+      })),
+      "north-america"
+    );
+    return;
+  }
 
   function makeOutline(box) {
     const [south, west, north, east] = box;
@@ -116,9 +141,9 @@
         },
         aircraft: {
           title: "Hava Aracı Detayı",
-          source: "FlightGlobal World Air Forces 2025 / Cirium fleets data",
-          sourceUrl: FLIGHTGLOBAL_2025,
-          updated: "2025",
+          source: "FlightGlobal World Air Forces 2026 / Cirium fleets data",
+          sourceUrl: FLIGHTGLOBAL_2026,
+          updated: "2026",
           note: "Hava aracı tip/adet kırılımı FlightGlobal/Cirium üzerinden doğrulanacak kaynak alanıdır; platform bağımlı silahlar sabit harita dairesi üretmez.",
           rows: [
             { type: "Muharip uçak", role: "Varsa", active: strengthValue(country, "sayısal kayıt yok", "yok/sınırlı") },
@@ -223,8 +248,8 @@
         rangeMode: "regional",
         confidence: 0.56,
         status: "kaynaklı",
-        sourceTag: "FlightGlobal World Air Forces 2025",
-        sourceUrl: FLIGHTGLOBAL_2025
+        sourceTag: "FlightGlobal World Air Forces 2026",
+        sourceUrl: FLIGHTGLOBAL_2026
       },
       {
         id: `${country.id}-air-defense`,
@@ -322,69 +347,7 @@
   }
 
   function makeSites(country) {
-    const [lat, lng] = country.center;
-    const sites = [
-      {
-        id: `${country.id}-site-land`,
-        name: `${country.name} kara hazırlık bölgesi`,
-        type: "land",
-        lat,
-        lng,
-        radiusKm: country.tier === "small" ? 70 : 120,
-        precision: country.tier === "small" ? "ülke ölçeği" : "150 km grid",
-        status: "Genelleştirilmiş",
-        source: "Açık kaynak ülke profili"
-      },
-      {
-        id: `${country.id}-site-air`,
-        name: `${country.name} hava faaliyet bölgesi`,
-        type: "air",
-        lat: lat + 0.35,
-        lng: lng - 0.45,
-        radiusKm: country.tier === "small" ? 60 : 105,
-        precision: "Bölgesel",
-        status: "Yaklaşık",
-        source: "FlightGlobal ve açık kaynak hava profili"
-      },
-      {
-        id: `${country.id}-site-defense`,
-        name: `${country.name} hava savunma bölgesi`,
-        type: "defense",
-        lat: lat - 0.25,
-        lng: lng + 0.55,
-        radiusKm: country.tier === "small" ? 65 : 125,
-        precision: "Bölgesel",
-        status: "Genelleştirilmiş",
-        source: "SIPRI/UNROCA ve açık kaynak savunma profili"
-      },
-      {
-        id: `${country.id}-site-sensor`,
-        name: `${country.name} sensör koordinasyon bölgesi`,
-        type: "sensor",
-        lat: lat + 0.15,
-        lng: lng + 0.25,
-        radiusKm: country.tier === "small" ? 60 : 135,
-        precision: "Bölgesel",
-        status: "Genelleştirilmiş",
-        source: "Açık kaynak OSINT derlemesi"
-      }
-    ];
-
-    if (country.coast) {
-      sites.push({
-        id: `${country.id}-site-naval`,
-        name: `${country.name} deniz destek bölgesi`,
-        type: "naval",
-        lat: lat - 0.45,
-        lng: lng - 0.15,
-        radiusKm: country.tier === "small" ? 55 : 95,
-        precision: "100 km grid",
-        status: "Genelleştirilmiş",
-        source: "Liman/kıyı ve filo kaynakları"
-      });
-    }
-
-    return sites;
+    return [];
   }
 
   function makeSources(country) {
@@ -394,25 +357,25 @@
         id: `${country.id}-src-primary`,
         title: country.gfp ? `2026 ${country.name} Military Strength` : `${country.name} UNROCA raporlama profili`,
         publisher: country.gfp ? "Global Firepower" : "UNROCA / açık kaynak",
-        date: "2026-04-27",
+        date: "2026-04-30",
         state: country.gfp ? "review" : "verified",
         url: src,
         summary: "Personel, kara, hava ve deniz kategori toplamları veya sınırlı güvenlik profili için kaynak."
       },
       {
         id: `${country.id}-src-flightglobal`,
-        title: "World Air Forces 2025 Directory",
+        title: "World Air Forces 2026 Directory",
         publisher: "FlightGlobal / Cirium",
-        date: "2025-01-01",
+        date: "2026-01-01",
         state: "review",
-        url: FLIGHTGLOBAL_2025,
+        url: FLIGHTGLOBAL_2026,
         summary: "Hava aracı tip/adet kırılımı için ortak kaynak."
       },
       {
         id: `${country.id}-src-sipri`,
         title: "SIPRI Arms Transfers Database",
         publisher: "SIPRI",
-        date: "2026-04-27",
+        date: "2026-04-30",
         state: "review",
         url: SIPRI,
         summary: "Transfer ve tedarik çapraz kontrolü için kaynak."
@@ -424,7 +387,7 @@
         id: `${country.id}-src-unroca`,
         title: "UN Register of Conventional Arms",
         publisher: "UNROCA",
-        date: "2026-04-27",
+        date: "2026-04-30",
         state: "review",
         url: UNROCA,
         summary: "Devlet raporları üzerinden konvansiyonel silah transfer doğrulaması için kullanılır."

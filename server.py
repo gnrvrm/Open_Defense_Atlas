@@ -11,334 +11,22 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
 from urllib.error import URLError
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 from urllib.request import Request, urlopen
 
 
 ROOT = Path(__file__).resolve().parent
-USER_AGENT = "OpenDefenseAtlas/0.1 local-research-prototype"
-SERVER_BUILD = "v0.6.2-country-validation-20260427"
+USER_AGENT = "OpenDefenseAtlas/0.7 generated-source-synthesis"
+SERVER_BUILD = "v0.8.0-ui-source-synthesis-20260501"
 FETCH_TIMEOUT_SECONDS = 5
 FETCH_READ_LIMIT = 1_000_000
 
-
-SOURCE_CONFIGS: dict[str, list[dict[str, Any]]] = {
-    "turkiye": [
-        {
-            "id": "roketsan-tayfun",
-            "title": "TAYFUN füzesi",
-            "publisher": "Roketsan ürün kataloğu",
-            "category": "attack",
-            "url": "https://www.roketsan.com.tr/uploads/docs/kataloglar/ENG/2024/1726596010_tayfun.pdf",
-            "source_type": "pdf",
-            "range_label": ">280 km",
-            "range_km": 280,
-            "state": "verified",
-            "summary": "Resmi ürün kataloğunda menzil >280 km olarak yayımlanıyor.",
-        },
-        {
-            "id": "roketsan-khan",
-            "title": "KHAN / BORA füzesi",
-            "publisher": "Roketsan ürün sayfası",
-            "category": "attack",
-            "url": "https://www.roketsan.com.tr/en/products/khan-missile",
-            "source_type": "html",
-            "patterns": [r"Range\s+([0-9]+\s*[-–]\s*[0-9]+\s*km)"],
-            "state": "verified",
-            "summary_prefix": "Resmi ürün sayfasında menzil",
-        },
-        {
-            "id": "roketsan-trg-300",
-            "title": "TRG-300 güdümlü füze",
-            "publisher": "Roketsan ürün sayfası",
-            "category": "attack",
-            "url": "https://www.roketsan.com.tr/en/products/trg-300-guided-missile",
-            "source_type": "html",
-            "patterns": [
-                r"ranges\s+(20\s*[-–]\s*120\s*km)",
-                r"Range\s+(30\s*[-–]\s*120\s*km)",
-            ],
-            "state": "verified",
-            "summary_prefix": "Resmi ürün sayfasında menzil",
-        },
-        {
-            "id": "roketsan-som-j",
-            "title": "SOM-J seyir füzesi",
-            "publisher": "Roketsan ürün kataloğu",
-            "category": "attack",
-            "url": "https://www.roketsan.com.tr/uploads/docs/kataloglar/ENG/2024/1726595985_som-j.pdf",
-            "source_type": "pdf",
-            "range_label": "200 km",
-            "range_km": 200,
-            "state": "verified",
-            "summary": "Resmi ürün kataloğunda menzil 200 km olarak yayımlanıyor.",
-        },
-        {
-            "id": "roketsan-atmaca",
-            "title": "ATMACA gemisavar füzesi",
-            "publisher": "Roketsan ürün sayfası",
-            "category": "naval",
-            "url": "https://www.roketsan.com.tr/en/products/atmaca-anti-ship-missile",
-            "source_type": "html",
-            "patterns": [r"Range\s+(250\s*km)"],
-            "state": "verified",
-            "summary_prefix": "Resmi ürün sayfasında menzil",
-        },
-        {
-            "id": "roketsan-hisar",
-            "title": "HİSAR hava savunma füzeleri",
-            "publisher": "Roketsan ürün sayfası",
-            "category": "defense",
-            "url": "https://www.roketsan.com.tr/en/products/hisar-air-defence-missiles",
-            "source_type": "html",
-            "patterns": [r"Interception Range\s+([0-9]+\+\s*km)"],
-            "state": "verified",
-            "summary_prefix": "Resmi ürün sayfasında önleme menzili",
-            "collect_all": True,
-        },
-        {
-            "id": "roketsan-siper",
-            "title": "SİPER hava ve füze savunma sistemi",
-            "publisher": "Roketsan ürün kataloğu",
-            "category": "defense",
-            "url": "https://www.roketsan.com.tr/uploads/docs/kataloglar/ENG/2024/1726595985_siper.pdf",
-            "source_type": "pdf",
-            "range_label": "100+ / 150 km",
-            "range_km": 150,
-            "state": "verified",
-            "summary": "Resmi ürün kataloğunda SİPER Block-1 için 100+ km, Block-2 için 150 km menzil yayımlanıyor.",
-        },
-        {
-            "id": "roketsan-sungur",
-            "title": "SUNGUR hava savunma sistemi",
-            "publisher": "Roketsan ürün sayfası",
-            "category": "defense",
-            "url": "https://www.roketsan.com.tr/en/products/sungur-air-defence-missile-system",
-            "source_type": "reference",
-            "state": "review",
-            "summary": "Kısa menzilli hava savunma ürün kaydı; bu prototipte sayısal menzil alanı envantere manuel doğrulama ile işlenir.",
-        },
-        {
-            "id": "sipri-arms-transfers",
-            "title": "SIPRI Arms Transfers Database",
-            "publisher": "SIPRI",
-            "category": "reference",
-            "url": "https://www.sipri.org/databases/armstransfers",
-            "source_type": "reference",
-            "state": "review",
-            "summary": "Ülke bazlı transfer kayıtları için kaynak; doğrudan ürün envanteri değil, transfer doğrulaması için kullanılır.",
-        },
-        {
-            "id": "globalfirepower-2026",
-            "title": "2026 Turkiye Military Strength",
-            "publisher": "Global Firepower",
-            "category": "reference",
-            "url": "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=Turkey",
-            "source_type": "reference",
-            "state": "review",
-            "summary": "Personel, kara, hava ve deniz kategori toplamları için kaynak; model-model platform doğrulaması değildir.",
-        },
-        {
-            "id": "flightglobal-waf-2025",
-            "title": "World Air Forces 2025 Directory",
-            "publisher": "FlightGlobal / Cirium",
-            "category": "reference",
-            "url": "https://www.flightglobal.com/download?ac=106507",
-            "source_type": "reference",
-            "state": "review",
-            "summary": "Hava aracı tip/adet kırılımı için kullanılan kaynak.",
-        },
-        {
-            "id": "unroca",
-            "title": "UN Register of Conventional Arms",
-            "publisher": "UNROCA",
-            "category": "reference",
-            "url": "https://www.unroca.org/en/reporting/",
-            "source_type": "reference",
-            "state": "review",
-            "summary": "Devlet raporları üzerinden konvansiyonel silah transfer doğrulaması için kullanılır.",
-        },
-    ],
-    "poland": [
-        {
-            "id": "pl-himars",
-            "title": "HIMARS / Homar-A",
-            "publisher": "Lockheed Martin",
-            "category": "attack",
-            "url": "https://news.lockheedmartin.com/2023-05-15-Poland-Receives-Delivery-of-First-HIMARS",
-            "source_type": "pdf",
-            "range_label": "300 km sınıfı",
-            "range_km": 300,
-            "state": "verified",
-            "summary": "Polonya HIMARS teslimat ve tedarik kaydı; 300 km sınıfı derin ateş kabiliyeti olarak envantere bağlandı.",
-        },
-        {
-            "id": "pl-narew",
-            "title": "Narew / CAMM hava savunması",
-            "publisher": "MBDA",
-            "category": "defense",
-            "url": "https://www.mbda-systems.com/mbda-and-poland-sign-landmark-narew-project/",
-            "source_type": "pdf",
-            "range_label": "25+ km sınıfı",
-            "range_km": 25,
-            "state": "verified",
-            "summary": "Narew programı Polonya kısa/orta menzilli hava savunma katmanı için üretici kaynak kaydıdır.",
-        },
-        {
-            "id": "pl-ibcs",
-            "title": "Wisła / Patriot IBCS",
-            "publisher": "US Army",
-            "category": "sensor",
-            "url": "https://www.army.mil/article/285095/poland_becomes_first_ally_fully_operational_with_ibcs",
-            "source_type": "reference",
-            "state": "verified",
-            "summary": "Polonya'nın IBCS ile entegre hava savunma ağına ilişkin resmi müttefik kaynak kaydı.",
-        },
-        {
-            "id": "pl-nsm",
-            "title": "NSM kıyı savunma sistemi",
-            "publisher": "Kongsberg",
-            "category": "naval",
-            "url": "https://www.kongsberg.com/kda/news/news-archive/2023/kongsberg-signs-naval-strike-missile-coastal-defence-system-contract-with-poland-worth-approximately-nok-16-billion",
-            "source_type": "pdf",
-            "range_label": "100+ nm / 185+ km sınıfı",
-            "range_km": 185,
-            "state": "verified",
-            "summary": "Polonya kıyı savunma sistemi için NSM üretici/sözleşme kaynak kaydı.",
-        },
-        {
-            "id": "pl-globalfirepower-2026",
-            "title": "2026 Poland Military Strength",
-            "publisher": "Global Firepower",
-            "category": "reference",
-            "url": "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=poland",
-            "source_type": "reference",
-            "state": "review",
-            "summary": "Personel, kara, hava ve deniz kategori toplamları için kaynak; model-model platform doğrulaması değildir.",
-        },
-        {
-            "id": "pl-flightglobal-waf-2025",
-            "title": "World Air Forces 2025 Directory",
-            "publisher": "FlightGlobal / Cirium",
-            "category": "reference",
-            "url": "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article",
-            "source_type": "reference",
-            "state": "review",
-            "summary": "Polonya hava aracı tip/adet kırılımı için kullanılan kaynak.",
-        },
-        {
-            "id": "pl-sipri-arms-transfers",
-            "title": "SIPRI Arms Transfers Database",
-            "publisher": "SIPRI",
-            "category": "reference",
-            "url": "https://www.sipri.org/databases/armstransfers",
-            "source_type": "reference",
-            "state": "review",
-            "summary": "Ülke bazlı transfer kayıtları ve tedarik çapraz kontrolü için kullanılır.",
-        },
-        {
-            "id": "pl-unroca",
-            "title": "UN Register of Conventional Arms",
-            "publisher": "UNROCA",
-            "category": "reference",
-            "url": "https://www.unroca.org/en/reporting/",
-            "source_type": "reference",
-            "state": "review",
-            "summary": "Devlet raporları üzerinden konvansiyonel silah transfer doğrulaması için kullanılır.",
-        },
-    ],
-    "greece": [
-        {
-            "id": "gr-mbda-contracts",
-            "title": "Greece missile contracts with MBDA",
-            "publisher": "MBDA",
-            "category": "reference",
-            "url": "https://newsroom.mbda-systems.com/?p=6237",
-            "source_type": "reference",
-            "state": "verified",
-            "summary": "Rafale ve FDI modernizasyonuyla ilişkili MBDA füze sözleşmeleri için üretici kaynak kaydı.",
-        },
-        {
-            "id": "gr-scalp-eg",
-            "title": "SCALP EG",
-            "publisher": "MBDA",
-            "category": "attack",
-            "url": "https://newsroom.mbda-systems.com/?p=6237",
-            "source_type": "reference",
-            "state": "review",
-            "summary": "Havadan atılan stand-off mühimmat kaydı; platform bağımlı olduğu için sabit harita dairesi oluşturulmaz.",
-        },
-        {
-            "id": "gr-exocet",
-            "title": "Exocet MM40 Block 3C",
-            "publisher": "MBDA",
-            "category": "naval",
-            "url": "https://newsroom.mbda-systems.com/?p=6237",
-            "source_type": "pdf",
-            "range_label": "250 km sınıfı",
-            "range_km": 250,
-            "state": "verified",
-            "summary": "Yunanistan deniz modernizasyon paketinde yer alan Exocet ailesi için üretici kaynak kaydı.",
-        },
-        {
-            "id": "gr-s300",
-            "title": "S-300PMU-1",
-            "publisher": "Açık kaynak sistem referansları",
-            "category": "defense",
-            "url": "https://www.sipri.org/databases/armstransfers",
-            "source_type": "pdf",
-            "range_label": "150 km sınıfı",
-            "range_km": 150,
-            "state": "review",
-            "summary": "Uzun menzilli hava savunma sistemi kaydı; hassas konuşlanma bilgisi gösterilmez.",
-        },
-        {
-            "id": "gr-globalfirepower-2026",
-            "title": "2026 Greece Military Strength",
-            "publisher": "Global Firepower",
-            "category": "reference",
-            "url": "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=greece",
-            "source_type": "reference",
-            "state": "review",
-            "summary": "Personel, kara, hava ve deniz kategori toplamları için kaynak; model-model platform doğrulaması değildir.",
-        },
-        {
-            "id": "gr-flightglobal-waf-2025",
-            "title": "World Air Forces 2025 Directory",
-            "publisher": "FlightGlobal / Cirium",
-            "category": "reference",
-            "url": "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article",
-            "source_type": "reference",
-            "state": "review",
-            "summary": "Yunanistan hava aracı tip/adet kırılımı için kullanılan kaynak.",
-        },
-        {
-            "id": "gr-sipri-arms-transfers",
-            "title": "SIPRI Arms Transfers Database",
-            "publisher": "SIPRI",
-            "category": "reference",
-            "url": "https://www.sipri.org/databases/armstransfers",
-            "source_type": "reference",
-            "state": "review",
-            "summary": "Ülke bazlı transfer kayıtları ve tedarik çapraz kontrolü için kullanılır.",
-        },
-        {
-            "id": "gr-unroca",
-            "title": "UN Register of Conventional Arms",
-            "publisher": "UNROCA",
-            "category": "reference",
-            "url": "https://www.unroca.org/en/reporting/",
-            "source_type": "reference",
-            "state": "review",
-            "summary": "Devlet raporları üzerinden konvansiyonel silah transfer doğrulaması için kullanılır.",
-        },
-    ],
-}
 
 GFP_ID_OVERRIDES = {
     "bosnia-herzegovina": "bosnia-and-herzegovina",
     "north-macedonia": "macedonia",
     "trinidad-tobago": "trinidad-and-tobago",
+    "turkiye": "Turkey",
     "united-arab-emirates": "united-arab-emirates",
     "united-states": "united-states-of-america",
     "united-kingdom": "united-kingdom",
@@ -383,20 +71,147 @@ NO_GFP_COUNTRIES = {
     "vatican-city",
 }
 
+NATO_COUNTRIES = {
+    "albania",
+    "belgium",
+    "bulgaria",
+    "canada",
+    "croatia",
+    "czechia",
+    "denmark",
+    "estonia",
+    "finland",
+    "france",
+    "germany",
+    "greece",
+    "hungary",
+    "iceland",
+    "italy",
+    "latvia",
+    "lithuania",
+    "luxembourg",
+    "montenegro",
+    "netherlands",
+    "north-macedonia",
+    "norway",
+    "poland",
+    "portugal",
+    "romania",
+    "slovakia",
+    "slovenia",
+    "spain",
+    "sweden",
+    "turkiye",
+    "united-kingdom",
+    "united-states",
+}
 
-def country_title(country_id: str) -> str:
+EDA_COUNTRIES = {
+    "austria",
+    "belgium",
+    "bulgaria",
+    "croatia",
+    "cyprus",
+    "czechia",
+    "denmark",
+    "estonia",
+    "finland",
+    "france",
+    "germany",
+    "greece",
+    "hungary",
+    "ireland",
+    "italy",
+    "latvia",
+    "lithuania",
+    "luxembourg",
+    "malta",
+    "netherlands",
+    "poland",
+    "portugal",
+    "romania",
+    "slovakia",
+    "slovenia",
+    "spain",
+    "sweden",
+}
+
+COVERAGE_LABELS = {
+    "force-totals": "kuvvet toplamları",
+    "security-structure": "güvenlik yapısı",
+    "air-fleet": "hava filosu",
+    "orders": "sipariş ve modernizasyon",
+    "arms-transfers": "silah transferleri",
+    "procurement": "tedarik",
+    "official-reporting": "devlet raporlaması",
+    "military-expenditure": "askeri harcama",
+    "budget-trend": "bütçe trendi",
+    "alliance-spending": "ittifak harcaması",
+    "defence-investment": "savunma yatırımı",
+    "conflict-context": "çatışma bağlamı",
+    "conflict-events": "olay verisi",
+    "peacekeeping": "barışı koruma katkısı",
+}
+
+STATE_SCORE = {
+    "verified": 1.0,
+    "review": 0.72,
+    "candidate": 0.48,
+    "pending": 0.24,
+    "loading": 0.18,
+    "error": 0.12,
+}
+
+
+def country_title(country_id: str, display_name: str | None = None) -> str:
+    if display_name:
+        return display_name
     special = {
         "bosnia-herzegovina": "Bosnia and Herzegovina",
         "czechia": "Czechia",
         "north-macedonia": "North Macedonia",
+        "turkiye": "Türkiye",
         "united-kingdom": "United Kingdom",
         "vatican-city": "Vatican City",
     }
     return special.get(country_id, country_id.replace("-", " ").title())
 
 
-def build_generic_country_configs(country_id: str) -> list[dict[str, Any]]:
-    name = country_title(country_id)
+def source_config(
+    country_id: str,
+    key: str,
+    title: str,
+    publisher: str,
+    url: str,
+    summary: str,
+    coverage: list[str],
+    weight: float,
+    state: str = "review",
+    access: str = "open",
+    scope: str = "global",
+    limitations: str | None = None,
+) -> dict[str, Any]:
+    config = {
+        "id": f"{country_id}-{key}",
+        "title": title,
+        "publisher": publisher,
+        "category": "reference",
+        "url": url,
+        "source_type": "static_reference",
+        "state": state,
+        "summary": summary,
+        "coverage": coverage,
+        "weight": weight,
+        "access": access,
+        "scope": scope,
+    }
+    if limitations:
+        config["limitations"] = limitations
+    return config
+
+
+def build_generic_country_configs(country_id: str, display_name: str | None = None) -> list[dict[str, Any]]:
+    name = country_title(country_id, display_name)
     gfp_id = GFP_ID_OVERRIDES.get(country_id, country_id)
     has_gfp_profile = country_id not in NO_GFP_COUNTRIES
     primary_url = (
@@ -408,50 +223,143 @@ def build_generic_country_configs(country_id: str) -> list[dict[str, Any]]:
     primary_title = f"2026 {name} Military Strength" if has_gfp_profile else f"{name} reporting and defense reference"
 
     configs = [
-        {
-            "id": f"{country_id}-primary-defense-profile",
-            "title": primary_title,
-            "publisher": primary_publisher,
-            "category": "reference",
-            "url": primary_url,
-            "source_type": "static_reference",
-            "state": "review",
-            "summary": "Ülke ölçeğinde personel, kara, hava ve deniz kategori toplamları veya sınırlı güvenlik profili için standart kaynak.",
-        },
-        {
-            "id": f"{country_id}-flightglobal-waf-2025",
-            "title": "World Air Forces 2025 Directory",
-            "publisher": "FlightGlobal / Cirium",
-            "category": "reference",
-            "url": "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article",
-            "source_type": "static_reference",
-            "state": "review",
-            "summary": "Hava aracı tip/adet kırılımı için ortak kaynak.",
-        },
-        {
-            "id": f"{country_id}-sipri-arms-transfers",
-            "title": "SIPRI Arms Transfers Database",
-            "publisher": "SIPRI",
-            "category": "reference",
-            "url": "https://www.sipri.org/databases/armstransfers",
-            "source_type": "static_reference",
-            "state": "review",
-            "summary": "Transfer ve tedarik çapraz kontrolü için kaynak.",
-        },
+        source_config(
+            country_id,
+            "primary-defense-profile",
+            primary_title,
+            primary_publisher,
+            primary_url,
+            "Ülke ölçeğinde personel, kara, hava ve deniz kategori toplamları veya sınırlı güvenlik profili için standart kaynak.",
+            ["force-totals", "security-structure"],
+            0.58 if has_gfp_profile else 0.44,
+            limitations="Kategori toplamları model, görev durumu veya gerçek zamanlı hazırlık seviyesi vermez.",
+        ),
+        source_config(
+            country_id,
+            "flightglobal-waf-2026",
+            "World Air Forces 2026 Directory",
+            "FlightGlobal / Cirium",
+            "https://www.flightglobal.com/defence/2026-world-air-forces-directory/165267.article",
+            "Hava aracı tip/adet kırılımı, sipariş ve modernizasyon takibi için ortak kaynak.",
+            ["air-fleet", "orders"],
+            0.74,
+            limitations="Hava platformları mühimmat konfigürasyonu veya operasyonel hazırlık anlamına gelmez.",
+        ),
+        source_config(
+            country_id,
+            "sipri-arms-transfers",
+            "SIPRI Arms Transfers Database",
+            "SIPRI",
+            "https://www.sipri.org/databases/armstransfers",
+            "Transfer ve tedarik çapraz kontrolü için kaynak.",
+            ["arms-transfers", "procurement"],
+            0.78,
+            limitations="SIPRI transfer hacmi ve teslimat kaydıdır; stok, kullanım durumu veya mühimmat miktarı değildir.",
+        ),
+        source_config(
+            country_id,
+            "sipri-milex",
+            "SIPRI Military Expenditure Database",
+            "SIPRI",
+            "https://www.sipri.org/databases/milex",
+            "Askeri harcama, GSYH payı ve uzun dönem bütçe trendi için açık kaynak zaman serisi.",
+            ["military-expenditure", "budget-trend"],
+            0.76,
+            limitations="Harcama verisi kapasite çıktısını doğrudan ölçmez; tanımlar ve şeffaflık ülkeye göre değişir.",
+        ),
+        source_config(
+            country_id,
+            "world-bank-milex",
+            "World Bank WDI Military Expenditure",
+            "World Bank / SIPRI",
+            "https://data.worldbank.org/indicator/MS.MIL.XPND.CD",
+            "SIPRI tabanlı askeri harcama göstergelerini World Development Indicators üzerinden doğrulamak için kullanılır.",
+            ["military-expenditure", "budget-trend"],
+            0.7,
+            limitations="World Bank göstergeleri SIPRI metodolojisine dayanır; envanter veya platform seviyesi vermez.",
+        ),
+        source_config(
+            country_id,
+            "ucdp-conflict-data",
+            "UCDP Conflict Data",
+            "Uppsala Conflict Data Program",
+            "https://ucdp.uu.se/downloads/",
+            "Ülke risk ve çatışma bağlamını, envanterden ayrı bir bağlam katmanı olarak besler.",
+            ["conflict-context"],
+            0.66,
+            limitations="Çatışma verisi askeri envanter doğrulaması değildir; bağlam ve risk katmanı olarak değerlendirilir.",
+        ),
+        source_config(
+            country_id,
+            "un-peacekeeping-contributors",
+            "UN Peacekeeping Troop and Police Contributors",
+            "United Nations Peacekeeping",
+            "https://peacekeeping.un.org/en/troop-and-police-contributors",
+            "Barışı koruma görevlerine asker ve polis katkısını dış görev/katılım bağlamı olarak izler.",
+            ["peacekeeping"],
+            0.62,
+            limitations="Barışı koruma katkıları ülkenin toplam kapasitesini veya muharip hazırlığını göstermez.",
+        ),
+        source_config(
+            country_id,
+            "acled-conflict-events",
+            "ACLED Conflict Data API",
+            "ACLED",
+            "https://acleddata.com/conflict-data",
+            "API anahtarı eklendiğinde yakın dönem siyasi şiddet ve protesto olaylarını bağlam katmanına eklemek için aday kaynak.",
+            ["conflict-events", "conflict-context"],
+            0.52,
+            state="candidate",
+            access="registration",
+            limitations="ACLED erişimi kayıt/API anahtarı gerektirir; envanter kaynağı olarak değil olay bağlamı olarak kullanılmalıdır.",
+        ),
     ]
 
     if has_gfp_profile:
         configs.append(
-            {
-            "id": f"{country_id}-unroca",
-            "title": "UN Register of Conventional Arms",
-            "publisher": "UNROCA",
-            "category": "reference",
-            "url": "https://www.unroca.org/en/reporting/",
-            "source_type": "static_reference",
-            "state": "review",
-            "summary": "Devlet raporları üzerinden konvansiyonel silah transfer doğrulaması için kullanılır.",
-            }
+            source_config(
+                country_id,
+                "unroca",
+                "UN Register of Conventional Arms",
+                "UNROCA",
+                "https://www.unroca.org/en/reporting/",
+                "Devlet raporları üzerinden konvansiyonel silah transfer doğrulaması için kullanılır.",
+                ["official-reporting", "arms-transfers"],
+                0.76,
+                limitations="UNROCA devlet raporlamasına bağlıdır; eksik raporlama veya boş yıl kapasite yokluğu anlamına gelmez.",
+            )
+        )
+
+    if country_id in NATO_COUNTRIES:
+        configs.append(
+            source_config(
+                country_id,
+                "nato-defence-expenditure",
+                "NATO Defence Expenditures",
+                "NATO",
+                "https://www.nato.int/en/what-we-do/introduction-to-nato/defence-expenditures-and-natos-5-commitment",
+                "NATO üyeleri için ortak savunma harcaması tanımı ve müttefik raporlamasını çapraz kontrol eder.",
+                ["alliance-spending", "military-expenditure"],
+                0.74,
+                scope="regional",
+                limitations="Sadece NATO müttefiklerine uygulanır ve harcama girdisi kapasite çıktısını doğrudan ölçmez.",
+            )
+        )
+
+    if country_id in EDA_COUNTRIES:
+        configs.append(
+            source_config(
+                country_id,
+                "eda-defence-data",
+                "EDA Defence Data",
+                "European Defence Agency",
+                "https://www.eda.europa.eu/publications-and-data/defence-data",
+                "EDA ülkeleri için savunma harcaması, yatırım ve iş birliği göstergelerini tamamlayıcı kaynak olarak kullanır.",
+                ["defence-investment", "military-expenditure"],
+                0.7,
+                scope="regional",
+                limitations="EDA verisi Avrupa katılımcı ülkeleriyle sınırlıdır; platform envanteri sağlamaz.",
+            )
         )
 
     return configs
@@ -527,7 +435,7 @@ def build_static_finding(config: dict[str, Any], reachable: bool) -> dict[str, A
     summary = config.get("summary", "Kaynak kaydı incelenmek üzere eklendi.")
     if not reachable:
         summary = f"Kaynağa şu anda erişilemedi; son bilinen kayıt: {summary}"
-    return {
+    finding = {
         "id": config["id"],
         "title": config["title"],
         "publisher": config["publisher"],
@@ -539,10 +447,96 @@ def build_static_finding(config: dict[str, Any], reachable: bool) -> dict[str, A
         "rangeKm": config.get("range_km"),
         "summary": summary,
     }
+    for key in ("coverage", "weight", "access", "scope", "limitations"):
+        if key in config:
+            finding[key] = config[key]
+    return finding
 
 
-def research_country(country_id: str) -> dict[str, Any]:
-    configs = SOURCE_CONFIGS.get(country_id) or build_generic_country_configs(country_id)
+def source_coverage_labels(coverage: list[str]) -> list[str]:
+    return [COVERAGE_LABELS.get(item, item.replace("-", " ")) for item in coverage]
+
+
+def build_source_synthesis(country_id: str, findings: list[dict[str, Any]], warnings: list[str]) -> dict[str, Any]:
+    evidence = [finding for finding in findings if finding.get("category") != "synthesis"]
+    weighted = 0.0
+    total_weight = 0.0
+    coverage: set[str] = set()
+    limitations: list[str] = []
+    open_count = 0
+    registration_count = 0
+    regional_count = 0
+
+    for finding in evidence:
+        weight = float(finding.get("weight") or 0.5)
+        total_weight += weight
+        weighted += weight * STATE_SCORE.get(str(finding.get("state", "review")), 0.55)
+        coverage.update(item for item in finding.get("coverage", []) if isinstance(item, str))
+        limitation = finding.get("limitations")
+        if limitation and limitation not in limitations:
+            limitations.append(str(limitation))
+        access = finding.get("access", "open")
+        if access == "open":
+            open_count += 1
+        elif access == "registration":
+            registration_count += 1
+        if finding.get("scope") == "regional":
+            regional_count += 1
+
+    base_score = (weighted / total_weight) if total_weight else 0.0
+    coverage_bonus = min(0.08, max(0, len(coverage) - 4) * 0.01)
+    warning_penalty = min(0.08, len(warnings) * 0.02)
+    confidence_score = max(0.0, min(0.9, base_score + coverage_bonus - warning_penalty))
+    confidence = "yüksek" if confidence_score >= 0.74 else "orta" if confidence_score >= 0.56 else "düşük"
+    sorted_coverage = sorted(coverage)
+
+    return {
+        "sourceCount": len(evidence),
+        "openSourceCount": open_count,
+        "registrationSourceCount": registration_count,
+        "regionalSourceCount": regional_count,
+        "coverageAreas": sorted_coverage,
+        "coverageLabels": source_coverage_labels(sorted_coverage),
+        "confidence": confidence,
+        "confidenceScore": round(confidence_score, 2),
+        "method": (
+            "Kaynaklar kuvvet toplamı, hava filosu, transfer/tedarik, harcama, resmi raporlama "
+            "ve çatışma bağlamı olarak ayrılır; resmi veya metodolojisi açık kaynaklar daha yüksek ağırlık alır."
+        ),
+        "limitations": limitations[:6],
+    }
+
+
+def build_synthesis_finding(
+    country_id: str, synthesis: dict[str, Any], display_name: str | None = None
+) -> dict[str, Any]:
+    labels = synthesis.get("coverageLabels", [])
+    visible_labels = ", ".join(labels[:5])
+    if len(labels) > 5:
+        visible_labels += f" +{len(labels) - 5}"
+    confidence_score = synthesis.get("confidenceScore", 0)
+    state = "verified" if confidence_score >= 0.74 else "review"
+    return {
+        "id": f"{country_id}-source-synthesis",
+        "title": f"{country_title(country_id, display_name)} kaynak sentezi",
+        "publisher": "Open Defense Atlas",
+        "category": "synthesis",
+        "date": today(),
+        "state": state,
+        "summary": (
+            f"{synthesis['sourceCount']} kaynak/adaptör sentezlendi. Kapsam: {visible_labels}. "
+            f"Güven: {synthesis['confidence']} ({confidence_score})."
+        ),
+        "coverage": synthesis.get("coverageAreas", []),
+        "weight": 1.0,
+        "access": "derived",
+        "scope": "global",
+        "limitations": "Bu kart kaynak güvenini özetler; ham envanter veya operasyonel konum verisi değildir.",
+    }
+
+
+def research_country(country_id: str, display_name: str | None = None) -> dict[str, Any]:
+    configs = build_generic_country_configs(country_id, display_name)
     if not configs:
         return {
             "countryId": country_id,
@@ -604,11 +598,15 @@ def research_country(country_id: str) -> dict[str, Any]:
         else:
             findings.append(build_static_finding(config, False))
 
+    synthesis = build_source_synthesis(country_id, findings, warnings)
+    findings.insert(0, build_synthesis_finding(country_id, synthesis, display_name))
+
     return {
         "countryId": country_id,
         "generatedAt": dt.datetime.utcnow().isoformat(timespec="seconds") + "Z",
         "build": SERVER_BUILD,
         "mode": "source-adapter-alpha",
+        "synthesis": synthesis,
         "findings": findings,
         "sources": sources,
         "warnings": warnings,
@@ -643,7 +641,9 @@ class AtlasHandler(SimpleHTTPRequestHandler):
             country_id = parsed.path.rsplit("/", 1)[-1]
             if country_id.endswith(".json"):
                 country_id = country_id[:-5]
-            payload = research_country(country_id)
+            query = parse_qs(parsed.query)
+            display_name = query.get("name", [None])[0]
+            payload = research_country(country_id, display_name=display_name)
             body = json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")

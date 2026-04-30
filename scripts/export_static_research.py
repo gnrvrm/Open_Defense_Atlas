@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT))
 from server import research_country
 
 
-def frontend_country_ids() -> list[str]:
+def frontend_countries() -> list[dict[str, str]]:
     script = r"""
 const fs = require("fs");
 const vm = require("vm");
@@ -23,31 +23,41 @@ for (const file of [
   "src/data.js",
   "src/gfpMetrics.js",
   "src/profileMetrics.js",
-  "src/countryProfiles.js",
+  "src/osintSites.js",
+  "src/generatedProfiles.js",
   "src/europeProfiles.js",
   "src/americasProfiles.js",
-  "src/standardProfiles.js",
   "src/asiaProfiles.js",
   "src/africaProfiles.js",
-  "src/oceaniaProfiles.js"
+  "src/oceaniaProfiles.js",
+  "src/countryProfiles.js"
 ]) {
   vm.runInContext(fs.readFileSync(file, "utf8"), sandbox, { filename: file });
 }
-process.stdout.write(JSON.stringify(sandbox.window.ODA_DATA.countries.map((country) => country.id)));
+process.stdout.write(JSON.stringify(sandbox.window.ODA_DATA.countries.map((country) => ({
+  id: country.id,
+  name: country.name
+}))));
 """
-    output = subprocess.check_output(["node", "-e", script], cwd=ROOT, text=True)
-    country_ids = json.loads(output)
-    if not isinstance(country_ids, list) or not all(isinstance(item, str) for item in country_ids):
+    output = subprocess.check_output(["node", "-e", script], cwd=ROOT, text=True, encoding="utf-8")
+    countries = json.loads(output)
+    valid = (
+        isinstance(countries, list)
+        and all(isinstance(item, dict) for item in countries)
+        and all(isinstance(item.get("id"), str) and isinstance(item.get("name"), str) for item in countries)
+    )
+    if not valid:
         raise RuntimeError("Frontend country list could not be exported.")
-    return country_ids
+    return countries
 
 
 def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     exported = []
 
-    for country_id in frontend_country_ids():
-        payload = research_country(country_id)
+    for country in frontend_countries():
+        country_id = country["id"]
+        payload = research_country(country_id, display_name=country["name"])
         payload["mode"] = "static-research-export"
         target = OUT_DIR / f"{country_id}.json"
         target.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

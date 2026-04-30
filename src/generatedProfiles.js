@@ -1,8 +1,30 @@
 (function () {
   const GFP = "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=";
-  const FLIGHTGLOBAL_2025 = "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article";
+  const FLIGHTGLOBAL_2026 = "https://www.flightglobal.com/defence/2026-world-air-forces-directory/165267.article";
   const SIPRI = "https://www.sipri.org/databases/armstransfers";
   const UNROCA = "https://www.unroca.org/en/reporting/";
+  const SIPRI_MILEX = "https://www.sipri.org/databases/milex";
+  const WORLD_BANK_MILEX = "https://data.worldbank.org/indicator/MS.MIL.XPND.CD";
+  const UCDP = "https://ucdp.uu.se/downloads/";
+  const UN_PEACEKEEPING = "https://peacekeeping.un.org/en/troop-and-police-contributors";
+  const ACLED = "https://acleddata.com/conflict-data";
+  const NATO = "https://www.nato.int/en/what-we-do/introduction-to-nato/defence-expenditures-and-natos-5-commitment";
+  const EDA = "https://www.eda.europa.eu/publications-and-data/defence-data";
+
+  const NATO_COUNTRIES = new Set([
+    "albania", "belgium", "bulgaria", "canada", "croatia", "czechia", "denmark", "estonia",
+    "finland", "france", "germany", "greece", "hungary", "iceland", "italy", "latvia",
+    "lithuania", "luxembourg", "montenegro", "netherlands", "north-macedonia", "norway",
+    "poland", "portugal", "romania", "slovakia", "slovenia", "spain", "sweden", "turkiye",
+    "united-kingdom", "united-states"
+  ]);
+
+  const EDA_COUNTRIES = new Set([
+    "austria", "belgium", "bulgaria", "croatia", "cyprus", "czechia", "denmark", "estonia",
+    "finland", "france", "germany", "greece", "hungary", "ireland", "italy", "latvia",
+    "lithuania", "luxembourg", "malta", "netherlands", "poland", "portugal", "romania",
+    "slovakia", "slovenia", "spain", "sweden"
+  ]);
 
   function makeOutline(box) {
     const [south, west, north, east] = box;
@@ -78,9 +100,9 @@
         },
         aircraft: {
           title: "Hava Aracı Detayı",
-          source: "FlightGlobal World Air Forces 2025 / Cirium fleets data",
-          sourceUrl: FLIGHTGLOBAL_2025,
-          updated: "2025",
+          source: "FlightGlobal World Air Forces 2026 / Cirium fleets data",
+          sourceUrl: FLIGHTGLOBAL_2026,
+          updated: "2026",
           note: "Hava aracı tip/adet kırılımı FlightGlobal/Cirium üzerinden doğrulanacak kaynak alanıdır; platform bağımlı silahlar sabit harita dairesi üretmez.",
           rows: [
             { type: "Muharip uçak", role: "Varsa", active: strengthValue(country, "sayısal kayıt yok", "yok/sınırlı") },
@@ -185,8 +207,8 @@
         rangeMode: "regional",
         confidence: 0.56,
         status: "kaynaklı",
-        sourceTag: "FlightGlobal World Air Forces 2025",
-        sourceUrl: FLIGHTGLOBAL_2025
+        sourceTag: "FlightGlobal World Air Forces 2026",
+        sourceUrl: FLIGHTGLOBAL_2026
       },
       {
         id: `${country.id}-air-defense`,
@@ -284,69 +306,23 @@
   }
 
   function makeSites(country) {
-    const [lat, lng] = country.center;
-    const sites = [
-      {
-        id: `${country.id}-site-land`,
-        name: `${country.name} kara hazırlık bölgesi`,
-        type: "land",
-        lat,
-        lng,
-        radiusKm: country.tier ? 70 : 120,
-        precision: country.tier ? "ülke ölçeği" : "150 km grid",
-        status: "Genelleştirilmiş",
-        source: "Açık kaynak ülke profili"
-      },
-      {
-        id: `${country.id}-site-air`,
-        name: `${country.name} hava faaliyet bölgesi`,
-        type: "air",
-        lat: lat + 0.35,
-        lng: lng - 0.45,
-        radiusKm: country.tier ? 60 : 105,
-        precision: "Bölgesel",
-        status: "Yaklaşık",
-        source: "FlightGlobal ve açık kaynak hava profili"
-      },
-      {
-        id: `${country.id}-site-defense`,
-        name: `${country.name} hava savunma bölgesi`,
-        type: "defense",
-        lat: lat - 0.25,
-        lng: lng + 0.55,
-        radiusKm: country.tier ? 65 : 125,
-        precision: "Bölgesel",
-        status: "Genelleştirilmiş",
-        source: "SIPRI/UNROCA ve açık kaynak savunma profili"
-      },
-      {
-        id: `${country.id}-site-sensor`,
-        name: `${country.name} sensör koordinasyon bölgesi`,
-        type: "sensor",
-        lat: lat + 0.15,
-        lng: lng + 0.25,
-        radiusKm: country.tier ? 60 : 135,
-        precision: "Bölgesel",
-        status: "Genelleştirilmiş",
-        source: "Açık kaynak OSINT derlemesi"
-      }
-    ];
-
-    if (country.coast) {
-      sites.push({
-        id: `${country.id}-site-naval`,
-        name: `${country.name} deniz destek bölgesi`,
-        type: "naval",
-        lat: lat - 0.45,
-        lng: lng - 0.15,
-        radiusKm: country.tier ? 55 : 95,
-        precision: "100 km grid",
-        status: "Genelleştirilmiş",
-        source: "Liman/kıyı ve filo kaynakları"
-      });
-    }
-
-    return sites;
+    const sourceSites = window.ODA_OSINT_SITES?.[country.id] || [];
+    return sourceSites
+      .filter((site) => site.meaningful === true)
+      .map((site) => ({
+        id: `${country.id}-site-${site.id}`,
+        name: site.name,
+        type: site.type,
+        lat: site.lat,
+        lng: site.lng,
+        radiusKm: site.radiusKm || 10,
+        precision: site.precision || "açık kaynak, yaklaşık",
+        status: site.status || "Doğrulanmış anlamlı nokta",
+        source: site.source || "Açık kaynak doğrulanmış nokta",
+        sourceUrl: site.sourceUrl,
+        showArea: Boolean(site.showArea),
+        showRange: Boolean(site.showRange)
+      }));
   }
 
   function makeSources(country) {
@@ -356,28 +332,81 @@
         id: `${country.id}-src-primary`,
         title: country.gfp ? `2026 ${country.name} Military Strength` : `${country.name} UNROCA raporlama profili`,
         publisher: country.gfp ? "Global Firepower" : "UNROCA / açık kaynak",
-        date: "2026-04-27",
+        date: "2026-04-30",
         state: country.gfp ? "review" : "verified",
         url: src,
-        summary: "Personel, kara, hava ve deniz kategori toplamları veya sınırlı güvenlik profili için kaynak."
+        summary: "Personel, kara, hava ve deniz kategori toplamları veya sınırlı güvenlik profili için kaynak.",
+        coverage: ["force-totals", "security-structure"]
       },
       {
         id: `${country.id}-src-flightglobal`,
-        title: "World Air Forces 2025 Directory",
+        title: "World Air Forces 2026 Directory",
         publisher: "FlightGlobal / Cirium",
-        date: "2025-01-01",
+        date: "2026-01-01",
         state: "review",
-        url: FLIGHTGLOBAL_2025,
-        summary: "Hava aracı tip/adet kırılımı için ortak kaynak."
+        url: FLIGHTGLOBAL_2026,
+        summary: "Hava aracı tip/adet kırılımı, sipariş ve modernizasyon takibi için ortak kaynak.",
+        coverage: ["air-fleet", "orders"]
       },
       {
         id: `${country.id}-src-sipri`,
         title: "SIPRI Arms Transfers Database",
         publisher: "SIPRI",
-        date: "2026-04-27",
+        date: "2026-04-30",
         state: "review",
         url: SIPRI,
-        summary: "Transfer ve tedarik çapraz kontrolü için kaynak."
+        summary: "Transfer ve tedarik çapraz kontrolü için kaynak.",
+        coverage: ["arms-transfers", "procurement"]
+      },
+      {
+        id: `${country.id}-src-sipri-milex`,
+        title: "SIPRI Military Expenditure Database",
+        publisher: "SIPRI",
+        date: "2026-04-30",
+        state: "review",
+        url: SIPRI_MILEX,
+        summary: "Askeri harcama, GSYH payı ve uzun dönem bütçe trendi için açık kaynak zaman serisi.",
+        coverage: ["military-expenditure", "budget-trend"]
+      },
+      {
+        id: `${country.id}-src-world-bank-milex`,
+        title: "World Bank WDI Military Expenditure",
+        publisher: "World Bank / SIPRI",
+        date: "2026-04-30",
+        state: "review",
+        url: WORLD_BANK_MILEX,
+        summary: "SIPRI tabanlı askeri harcama göstergelerini World Development Indicators üzerinden doğrulamak için kullanılır.",
+        coverage: ["military-expenditure", "budget-trend"]
+      },
+      {
+        id: `${country.id}-src-ucdp`,
+        title: "UCDP Conflict Data",
+        publisher: "Uppsala Conflict Data Program",
+        date: "2026-04-30",
+        state: "review",
+        url: UCDP,
+        summary: "Ülke risk ve çatışma bağlamını, envanterden ayrı bir bağlam katmanı olarak besler.",
+        coverage: ["conflict-context"]
+      },
+      {
+        id: `${country.id}-src-un-peacekeeping`,
+        title: "UN Peacekeeping Troop and Police Contributors",
+        publisher: "United Nations Peacekeeping",
+        date: "2026-04-30",
+        state: "review",
+        url: UN_PEACEKEEPING,
+        summary: "Barışı koruma görevlerine asker ve polis katkısını dış görev/katılım bağlamı olarak izler.",
+        coverage: ["peacekeeping"]
+      },
+      {
+        id: `${country.id}-src-acled`,
+        title: "ACLED Conflict Data API",
+        publisher: "ACLED",
+        date: "2026-04-30",
+        state: "candidate",
+        url: ACLED,
+        summary: "API anahtarı eklendiğinde yakın dönem siyasi şiddet ve protesto olaylarını bağlam katmanına eklemek için aday kaynak.",
+        coverage: ["conflict-events", "conflict-context"]
       }
     ];
 
@@ -386,10 +415,37 @@
         id: `${country.id}-src-unroca`,
         title: "UN Register of Conventional Arms",
         publisher: "UNROCA",
-        date: "2026-04-27",
+        date: "2026-04-30",
         state: "review",
         url: UNROCA,
-        summary: "Devlet raporları üzerinden konvansiyonel silah transfer doğrulaması için kullanılır."
+        summary: "Devlet raporları üzerinden konvansiyonel silah transfer doğrulaması için kullanılır.",
+        coverage: ["official-reporting", "arms-transfers"]
+      });
+    }
+
+    if (NATO_COUNTRIES.has(country.id)) {
+      sources.push({
+        id: `${country.id}-src-nato-defence-expenditure`,
+        title: "NATO Defence Expenditures",
+        publisher: "NATO",
+        date: "2026-04-30",
+        state: "review",
+        url: NATO,
+        summary: "NATO üyeleri için ortak savunma harcaması tanımı ve müttefik raporlamasını çapraz kontrol eder.",
+        coverage: ["alliance-spending", "military-expenditure"]
+      });
+    }
+
+    if (EDA_COUNTRIES.has(country.id)) {
+      sources.push({
+        id: `${country.id}-src-eda-defence-data`,
+        title: "EDA Defence Data",
+        publisher: "European Defence Agency",
+        date: "2026-04-30",
+        state: "review",
+        url: EDA,
+        summary: "EDA ülkeleri için savunma harcaması, yatırım ve iş birliği göstergelerini tamamlayıcı kaynak olarak kullanır.",
+        coverage: ["defence-investment", "military-expenditure"]
       });
     }
 
@@ -423,5 +479,6 @@
     });
   }
 
-  window.ODA_STANDARD_PROFILES = { addCountries };
+  window.ODA_GENERATED_PROFILES = { addCountries, makeProfile };
+  window.ODA_STANDARD_PROFILES = window.ODA_GENERATED_PROFILES;
 })();

@@ -1,32 +1,120 @@
 {
   "countryId": "new-zealand",
-  "generatedAt": "2026-04-27T17:00:46Z",
-  "build": "v0.6.2-country-validation-20260427",
+  "generatedAt": "2026-04-30T19:29:18Z",
+  "build": "v0.7.0-source-synthesis-20260430",
   "mode": "static-research-export",
+  "synthesis": {
+    "sourceCount": 9,
+    "openSourceCount": 8,
+    "registrationSourceCount": 1,
+    "regionalSourceCount": 0,
+    "coverageAreas": [
+      "air-fleet",
+      "arms-transfers",
+      "budget-trend",
+      "conflict-context",
+      "conflict-events",
+      "force-totals",
+      "military-expenditure",
+      "official-reporting",
+      "orders",
+      "peacekeeping",
+      "procurement",
+      "security-structure"
+    ],
+    "coverageLabels": [
+      "hava filosu",
+      "silah transferleri",
+      "bütçe trendi",
+      "çatışma bağlamı",
+      "olay verisi",
+      "kuvvet toplamları",
+      "askeri harcama",
+      "devlet raporlaması",
+      "sipariş ve modernizasyon",
+      "barışı koruma katkısı",
+      "tedarik",
+      "güvenlik yapısı"
+    ],
+    "confidence": "yüksek",
+    "confidenceScore": 0.78,
+    "method": "Kaynaklar kuvvet toplamı, hava filosu, transfer/tedarik, harcama, resmi raporlama ve çatışma bağlamı olarak ayrılır; resmi veya metodolojisi açık kaynaklar daha yüksek ağırlık alır.",
+    "limitations": [
+      "Kategori toplamları model, görev durumu veya gerçek zamanlı hazırlık seviyesi vermez.",
+      "Hava platformları mühimmat konfigürasyonu veya operasyonel hazırlık anlamına gelmez.",
+      "SIPRI transfer hacmi ve teslimat kaydıdır; stok, kullanım durumu veya mühimmat miktarı değildir.",
+      "Harcama verisi kapasite çıktısını doğrudan ölçmez; tanımlar ve şeffaflık ülkeye göre değişir.",
+      "World Bank göstergeleri SIPRI metodolojisine dayanır; envanter veya platform seviyesi vermez.",
+      "Çatışma verisi askeri envanter doğrulaması değildir; bağlam ve risk katmanı olarak değerlendirilir."
+    ]
+  },
   "findings": [
     {
+      "id": "new-zealand-source-synthesis",
+      "title": "Yeni Zelanda kaynak sentezi",
+      "publisher": "Open Defense Atlas",
+      "category": "synthesis",
+      "date": "2026-04-30",
+      "state": "verified",
+      "summary": "9 kaynak/adaptör sentezlendi. Kapsam: hava filosu, silah transferleri, bütçe trendi, çatışma bağlamı, olay verisi +7. Güven: yüksek (0.78).",
+      "coverage": [
+        "air-fleet",
+        "arms-transfers",
+        "budget-trend",
+        "conflict-context",
+        "conflict-events",
+        "force-totals",
+        "military-expenditure",
+        "official-reporting",
+        "orders",
+        "peacekeeping",
+        "procurement",
+        "security-structure"
+      ],
+      "weight": 1.0,
+      "access": "derived",
+      "scope": "global",
+      "limitations": "Bu kart kaynak güvenini özetler; ham envanter veya operasyonel konum verisi değildir."
+    },
+    {
       "id": "new-zealand-primary-defense-profile",
-      "title": "2026 New Zealand Military Strength",
+      "title": "2026 Yeni Zelanda Military Strength",
       "publisher": "Global Firepower",
       "category": "reference",
       "url": "https://www.globalfirepower.com/country-military-strength-detail.php?country_id=new-zealand",
-      "date": "2026-04-27",
+      "date": "2026-04-30",
       "state": "review",
       "rangeLabel": null,
       "rangeKm": null,
-      "summary": "Ülke ölçeğinde personel, kara, hava ve deniz kategori toplamları veya sınırlı güvenlik profili için standart kaynak."
+      "summary": "Ülke ölçeğinde personel, kara, hava ve deniz kategori toplamları veya sınırlı güvenlik profili için standart kaynak.",
+      "coverage": [
+        "force-totals",
+        "security-structure"
+      ],
+      "weight": 0.58,
+      "access": "open",
+      "scope": "global",
+      "limitations": "Kategori toplamları model, görev durumu veya gerçek zamanlı hazırlık seviyesi vermez."
     },
     {
-      "id": "new-zealand-flightglobal-waf-2025",
-      "title": "World Air Forces 2025 Directory",
+      "id": "new-zealand-flightglobal-waf-2026",
+      "title": "World Air Forces 2026 Directory",
       "publisher": "FlightGlobal / Cirium",
       "category": "reference",
-      "url": "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article",
-      "date": "2026-04-27",
+      "url": "https://www.flightglobal.com/defence/2026-world-air-forces-directory/165267.article",
+      "date": "2026-04-30",
       "state": "review",
       "rangeLabel": null,
       "rangeKm": null,
-      "summary": "Hava aracı tip/adet kırılımı için ortak kaynak."
+      "summary": "Hava aracı tip/adet kırılımı, sipariş ve modernizasyon takibi için ortak kaynak.",
+      "coverage": [
+        "air-fleet",
+        "orders"
+      ],
+      "weight": 0.74,
+      "access": "open",
+      "scope": "global",
+      "limitations": "Hava platformları mühimmat konfigürasyonu veya operasyonel hazırlık anlamına gelmez."
     },
     {
       "id": "new-zealand-sipri-arms-transfers",
@@ -34,11 +122,117 @@
       "publisher": "SIPRI",
       "category": "reference",
       "url": "https://www.sipri.org/databases/armstransfers",
-      "date": "2026-04-27",
+      "date": "2026-04-30",
       "state": "review",
       "rangeLabel": null,
       "rangeKm": null,
-      "summary": "Transfer ve tedarik çapraz kontrolü için kaynak."
+      "summary": "Transfer ve tedarik çapraz kontrolü için kaynak.",
+      "coverage": [
+        "arms-transfers",
+        "procurement"
+      ],
+      "weight": 0.78,
+      "access": "open",
+      "scope": "global",
+      "limitations": "SIPRI transfer hacmi ve teslimat kaydıdır; stok, kullanım durumu veya mühimmat miktarı değildir."
+    },
+    {
+      "id": "new-zealand-sipri-milex",
+      "title": "SIPRI Military Expenditure Database",
+      "publisher": "SIPRI",
+      "category": "reference",
+      "url": "https://www.sipri.org/databases/milex",
+      "date": "2026-04-30",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Askeri harcama, GSYH payı ve uzun dönem bütçe trendi için açık kaynak zaman serisi.",
+      "coverage": [
+        "military-expenditure",
+        "budget-trend"
+      ],
+      "weight": 0.76,
+      "access": "open",
+      "scope": "global",
+      "limitations": "Harcama verisi kapasite çıktısını doğrudan ölçmez; tanımlar ve şeffaflık ülkeye göre değişir."
+    },
+    {
+      "id": "new-zealand-world-bank-milex",
+      "title": "World Bank WDI Military Expenditure",
+      "publisher": "World Bank / SIPRI",
+      "category": "reference",
+      "url": "https://data.worldbank.org/indicator/MS.MIL.XPND.CD",
+      "date": "2026-04-30",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "SIPRI tabanlı askeri harcama göstergelerini World Development Indicators üzerinden doğrulamak için kullanılır.",
+      "coverage": [
+        "military-expenditure",
+        "budget-trend"
+      ],
+      "weight": 0.7,
+      "access": "open",
+      "scope": "global",
+      "limitations": "World Bank göstergeleri SIPRI metodolojisine dayanır; envanter veya platform seviyesi vermez."
+    },
+    {
+      "id": "new-zealand-ucdp-conflict-data",
+      "title": "UCDP Conflict Data",
+      "publisher": "Uppsala Conflict Data Program",
+      "category": "reference",
+      "url": "https://ucdp.uu.se/downloads/",
+      "date": "2026-04-30",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Ülke risk ve çatışma bağlamını, envanterden ayrı bir bağlam katmanı olarak besler.",
+      "coverage": [
+        "conflict-context"
+      ],
+      "weight": 0.66,
+      "access": "open",
+      "scope": "global",
+      "limitations": "Çatışma verisi askeri envanter doğrulaması değildir; bağlam ve risk katmanı olarak değerlendirilir."
+    },
+    {
+      "id": "new-zealand-un-peacekeeping-contributors",
+      "title": "UN Peacekeeping Troop and Police Contributors",
+      "publisher": "United Nations Peacekeeping",
+      "category": "reference",
+      "url": "https://peacekeeping.un.org/en/troop-and-police-contributors",
+      "date": "2026-04-30",
+      "state": "review",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "Barışı koruma görevlerine asker ve polis katkısını dış görev/katılım bağlamı olarak izler.",
+      "coverage": [
+        "peacekeeping"
+      ],
+      "weight": 0.62,
+      "access": "open",
+      "scope": "global",
+      "limitations": "Barışı koruma katkıları ülkenin toplam kapasitesini veya muharip hazırlığını göstermez."
+    },
+    {
+      "id": "new-zealand-acled-conflict-events",
+      "title": "ACLED Conflict Data API",
+      "publisher": "ACLED",
+      "category": "reference",
+      "url": "https://acleddata.com/conflict-data",
+      "date": "2026-04-30",
+      "state": "candidate",
+      "rangeLabel": null,
+      "rangeKm": null,
+      "summary": "API anahtarı eklendiğinde yakın dönem siyasi şiddet ve protesto olaylarını bağlam katmanına eklemek için aday kaynak.",
+      "coverage": [
+        "conflict-events",
+        "conflict-context"
+      ],
+      "weight": 0.52,
+      "access": "registration",
+      "scope": "global",
+      "limitations": "ACLED erişimi kayıt/API anahtarı gerektirir; envanter kaynağı olarak değil olay bağlamı olarak kullanılmalıdır."
     },
     {
       "id": "new-zealand-unroca",
@@ -46,11 +240,19 @@
       "publisher": "UNROCA",
       "category": "reference",
       "url": "https://www.unroca.org/en/reporting/",
-      "date": "2026-04-27",
+      "date": "2026-04-30",
       "state": "review",
       "rangeLabel": null,
       "rangeKm": null,
-      "summary": "Devlet raporları üzerinden konvansiyonel silah transfer doğrulaması için kullanılır."
+      "summary": "Devlet raporları üzerinden konvansiyonel silah transfer doğrulaması için kullanılır.",
+      "coverage": [
+        "official-reporting",
+        "arms-transfers"
+      ],
+      "weight": 0.76,
+      "access": "open",
+      "scope": "global",
+      "limitations": "UNROCA devlet raporlamasına bağlıdır; eksik raporlama veya boş yıl kapasite yokluğu anlamına gelmez."
     }
   ],
   "sources": [
@@ -62,8 +264,8 @@
       "error": null
     },
     {
-      "id": "new-zealand-flightglobal-waf-2025",
-      "url": "https://www.flightglobal.com/defence/2025-world-air-forces-directory/160846.article",
+      "id": "new-zealand-flightglobal-waf-2026",
+      "url": "https://www.flightglobal.com/defence/2026-world-air-forces-directory/165267.article",
       "reachable": true,
       "tlsVerified": true,
       "error": null
@@ -71,6 +273,41 @@
     {
       "id": "new-zealand-sipri-arms-transfers",
       "url": "https://www.sipri.org/databases/armstransfers",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "new-zealand-sipri-milex",
+      "url": "https://www.sipri.org/databases/milex",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "new-zealand-world-bank-milex",
+      "url": "https://data.worldbank.org/indicator/MS.MIL.XPND.CD",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "new-zealand-ucdp-conflict-data",
+      "url": "https://ucdp.uu.se/downloads/",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "new-zealand-un-peacekeeping-contributors",
+      "url": "https://peacekeeping.un.org/en/troop-and-police-contributors",
+      "reachable": true,
+      "tlsVerified": true,
+      "error": null
+    },
+    {
+      "id": "new-zealand-acled-conflict-events",
+      "url": "https://acleddata.com/conflict-data",
       "reachable": true,
       "tlsVerified": true,
       "error": null
